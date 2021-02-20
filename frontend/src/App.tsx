@@ -14,7 +14,7 @@ import {
 
 const App = () => (
   <Container text style={{ margin: 20 }}>
-    <Header as="h1">driipask!</Header>
+    <Header as="h1">homete!</Header>
     <Message info>
       <p>알파 서비스 중입니다!</p>
     </Message>
