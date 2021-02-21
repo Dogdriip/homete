@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import {
   Container,
@@ -11,36 +11,99 @@ import {
   Label,
   Segment,
 } from "semantic-ui-react";
-import TwitterLogin from "react-twitter-auth/lib/react-twitter-auth-component";
+import firebase from "firebase/app";
+import "firebase/auth";
 
-interface State {
-  isAuthenticated: boolean;
-  user?: any;
-  token?: string;
+interface User {
+  id: string;
+  name: string;
+  screen_name: string;
+  description: string;
+  profile_image_url_https: string;
+  profile_image_url: string;
 }
 
+interface LoginState {
+  isAuthenticated: boolean;
+  token: string | null;
+  secret: string | null;
+  user: User | null;
+}
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_U03Au49VBs-vdhSb5CUWeaYErCFTMAc",
+  authDomain: "homete-9bace.firebaseapp.com",
+  projectId: "homete-9bace",
+  storageBucket: "homete-9bace.appspot.com",
+  messagingSenderId: "950277086668",
+  appId: "1:950277086668:web:8b1788eb752ca6a3731169",
+  measurementId: "G-M1SSFG4HH7",
+};
+
 const App = () => {
-  const [state, setState] = useState<State>({
+  try {
+    firebase.initializeApp(firebaseConfig);
+  } catch (e) {
+    console.error(e);
+  }
+
+  const [state, setState] = useState<LoginState>({
     isAuthenticated: false,
+    token: null,
+    secret: null,
     user: null,
-    token: "",
   });
 
-  const onSuccess = (response) => {
-    const token = response.headers.get("x-auth-token");
-    response.json().then((user) => {
-      if (token) {
-        setState({ isAuthenticated: true, user: user, token: token });
-      }
-    });
+  const provider = new firebase.auth.TwitterAuthProvider();
+
+  const onLogin = async () => {
+    try {
+      const result = await firebase.auth().signInWithPopup(provider);
+
+      const credential: firebase.auth.OAuthCredential = result.credential;
+
+      // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+      // You can use these server side with your app's credentials to access the Twitter API.
+      const token = credential.accessToken;
+      const secret = credential.secret;
+
+      // The signed-in user info.
+      const user: firebase.User = result.user;
+      const additionalUserInfo: firebase.auth.AdditionalUserInfo =
+        result.additionalUserInfo;
+      const profile = additionalUserInfo.profile;
+
+      setState({
+        isAuthenticated: true,
+        token,
+        secret,
+        user: {
+          id: profile["id"],
+          name: profile["name"],
+          screen_name: profile["screen_name"],
+          description: profile["description"],
+          profile_image_url: profile["profile_image_url"],
+          profile_image_url_https: profile["profile_image_url_https"],
+        },
+      });
+    } catch (e) {
+      console.log(e.code);
+      console.log(e.message);
+    }
   };
 
-  const onFailed = (error) => {
-    alert(error);
-  };
-
-  const logout = () => {
-    setState({ isAuthenticated: false, token: "", user: null });
+  const onLogout = async () => {
+    try {
+      await firebase.auth().signOut();
+      setState({
+        isAuthenticated: false,
+        token: null,
+        secret: null,
+        user: null,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -58,12 +121,9 @@ const App = () => {
                 트위터로 로그인해야 서비스를 사용할 수 있어요!
               </Card.Meta>
               <Card.Description>
-                <TwitterLogin
-                  loginUrl="http://localhost:4000/api/v1/auth/twitter"
-                  onFailure={onFailed}
-                  onSuccess={onSuccess}
-                  requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
-                />
+                <Button color="twitter" onClick={onLogin}>
+                  <Icon name="twitter" /> Sign in with Twitter
+                </Button>
               </Card.Description>
             </Card.Content>
           </Card>
@@ -75,7 +135,8 @@ const App = () => {
                 트위터로 로그인해야 서비스를 사용할 수 있어요!
               </Card.Meta>
               <Card.Description>
-                로그인 완료! 자신의 페이지를 확인해 보세요. 로그아웃
+                로그인 완료! 자신의 페이지를 확인해 보세요.{" "}
+                <a onClick={onLogout}>로그아웃</a>
               </Card.Description>
             </Card.Content>
           </Card>
