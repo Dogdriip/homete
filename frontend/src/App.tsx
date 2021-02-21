@@ -96,32 +96,29 @@ const App = () => (
     <Card.Group>
       <Card fluid>
         <Card.Content>
-          <Card.Description>
-            <Label color="red" horizontal>
-              1.000000 BTC
-            </Label>
-            드립님 너무 멋져요
-          </Card.Description>
+          <Card.Description>드립님 너무 멋져요</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <Icon name="time" />
+          1시간 전
         </Card.Content>
       </Card>
       <Card fluid>
         <Card.Content>
-          <Card.Description>
-            <Label color="red" horizontal>
-              1.000000 BTC
-            </Label>
-            드립님 너무 멋져요
-          </Card.Description>
+          <Card.Description>드립님 너무 멋져요</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <Icon name="time" />
+          1시간 전
         </Card.Content>
       </Card>
       <Card fluid>
         <Card.Content>
-          <Card.Description>
-            <Label color="red" horizontal>
-              1.000000 BTC
-            </Label>
-            드립님 너무 멋져요
-          </Card.Description>
+          <Card.Description>드립님 너무 멋져요</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <Icon name="time" />
+          1시간 전
         </Card.Content>
       </Card>
     </Card.Group>
