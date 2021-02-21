@@ -1886,6 +1886,11 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-twitter-auth@^0.0.1":
+  "integrity" "sha512-URXaFGq580iZbUWUIDUtYLQGZuT0MGJbwGBIdhkBqD4tvoJYqyR+XBbPxKZjGTMwpOZLEAnuq68uLhruvN3k4Q=="
+  "resolved" "https://registry.npmjs.org/@types/react-twitter-auth/-/react-twitter-auth-0.0.1.tgz"
+  "version" "0.0.1"
+
 "@types/react@*", "@types/react@^17.0.0":
   "integrity" "sha512-Xt40xQsrkdvjn1EyWe1Bc0dJLcil/9x2vAuW7ya+PuQip4UYUaXyhzWmAbwRsdMgwOFHpfp7/FFZebDU6Y8VHA=="
   "resolved" "https://registry.yarnpkg.com/@types/react/-/react-17.0.2.tgz"
@@ -9070,7 +9075,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.6.2", "prop-types@^15.7.2":
+"prop-types@*", "prop-types@^15.6.2", "prop-types@^15.7.2", "prop-types@> 15.5.0 < 17":
   "integrity" "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ=="
   "resolved" "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz"
   "version" "15.7.2"
@@ -9266,7 +9271,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@*", "react-dom@^16.0.0 || ^17.0.0", "react-dom@^16.8.0 || ^17", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^17.0.1":
+"react-dom@*", "react-dom@^0.14.0 || ^15.0.0 || ^16.0.0", "react-dom@^16.0.0 || ^17.0.0", "react-dom@^16.8.0 || ^17", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^17.0.1", "react-dom@> 15.5.0 < 17":
   "integrity" "sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug=="
   "resolved" "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.1.tgz"
   "version" "17.0.1"
@@ -9282,6 +9287,18 @@
 
 "react-fast-compare@^3.0.1":
   "version" "3.2.0"
+
+"react-icon-base@2.1.0":
+  "integrity" "sha1-oZbjP98eeqof2jrvu2i9rZ6Cp50="
+  "resolved" "https://registry.npmjs.org/react-icon-base/-/react-icon-base-2.1.0.tgz"
+  "version" "2.1.0"
+
+"react-icons@^2.2.5":
+  "integrity" "sha512-0n4lcGqzJFcIQLoQytLdJCE0DKSA9dkwEZRYoGrIDJZFvIT6Hbajx5mv9geqhqFiNjUgtxg8kPyDfjlhymbGFg=="
+  "resolved" "https://registry.npmjs.org/react-icons/-/react-icons-2.2.7.tgz"
+  "version" "2.2.7"
+  dependencies:
+    "react-icon-base" "2.1.0"
 
 "react-is@^16.6.3", "react-is@^16.8.1":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
@@ -9373,7 +9390,16 @@
   optionalDependencies:
     "fsevents" "^2.1.3"
 
-"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^17.0.1", "react@>= 16", "react@17.0.1":
+"react-twitter-auth@^0.0.13":
+  "integrity" "sha512-J2i4VuRDe5V2OlZzcRx7eNqXOsMou1yWjDORxFh5sHzFptxR3AhoXR5LrJsh0E7cfvejU6VCBRL4sVDX+pyRaA=="
+  "resolved" "https://registry.npmjs.org/react-twitter-auth/-/react-twitter-auth-0.0.13.tgz"
+  "version" "0.0.13"
+  dependencies:
+    "react-icons" "^2.2.5"
+    "url-search-params-polyfill" "^2.0.0"
+    "whatwg-fetch" "2.0.3"
+
+"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^17.0.1", "react@> 15.5.0 < 17", "react@>= 16", "react@17.0.1":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.yarnpkg.com/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
@@ -11224,6 +11250,11 @@
     "querystringify" "^2.1.1"
     "requires-port" "^1.0.0"
 
+"url-search-params-polyfill@^2.0.0":
+  "integrity" "sha512-DLQzhOippXPJOS+XJOwZGV5tILjGhIQEPbjEDAvTh5nWcZOpbGZG0xXj/lss+dAA1oC/8HYR5xFfC28TW0b+VQ=="
+  "resolved" "https://registry.npmjs.org/url-search-params-polyfill/-/url-search-params-polyfill-2.0.3.tgz"
+  "version" "2.0.3"
+
 "url@^0.11.0":
   "integrity" "sha1-ODjpfPxgUh63PFJajlW/3Z4uKPE="
   "resolved" "https://registry.yarnpkg.com/url/-/url-0.11.0.tgz"
@@ -11543,6 +11574,11 @@
   "integrity" "sha512-jXkLtsR42xhXg7akoDKvKWE40eJeI+2KZqcp2h3NsOrRnDvtWX36KcKl30dy+hxECivdk2BVUHVNrPtoMBUx6A=="
   "resolved" "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.5.0.tgz"
   "version" "3.5.0"
+
+"whatwg-fetch@2.0.3":
+  "integrity" "sha1-nITsLc9oGH/wC8ZOEnS0QhduHIQ="
+  "resolved" "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz"
+  "version" "2.0.3"
 
 "whatwg-mimetype@^2.3.0":
   "integrity" "sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g=="
