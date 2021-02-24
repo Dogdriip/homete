@@ -7,13 +7,15 @@ import App from "./App";
 import firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "./config/firebase";
-import recoil from "recoil";
+import recoil, { RecoilRoot } from "recoil";
 
 firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <RecoilRoot>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </RecoilRoot>,
   document.getElementById("root")
 );
