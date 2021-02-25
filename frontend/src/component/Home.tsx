@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Header, Card, Message } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import LoginWithTwitterButton from "./LoginWithTwitterButton";
 import { userState } from "../state/userState";
 import { useRecoilState } from "recoil";
@@ -26,19 +26,21 @@ const Home = (): JSX.Element => {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((firebaseUser) => {
-      setPending(false);
       if (firebaseUser) {
         setUser({ uid: firebaseUser.uid });
         updateUserProfile(firebaseUser.uid);
       }
+      setPending(false);
     });
+
+    console.log(user);
   }, []);
 
   return (
     <Card.Group centered>
       {pending ? (
         <LoadingCard />
-      ) : !user ? (
+      ) : !user || !user.uid ? (
         <Card fluid color="blue">
           <Card.Content>
             <Card.Header>트위터로 로그인</Card.Header>
