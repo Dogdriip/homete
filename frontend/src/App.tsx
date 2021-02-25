@@ -8,7 +8,7 @@ import { Container, Header, Message } from "semantic-ui-react";
 const App = () => {
   return (
     <Container text style={{ margin: 20 }}>
-      <Header as="h1">서비스 이름은 아직 비밀!</Header>
+      <Header as="h1">⚔️소드마스터여, 영원하라⚔️</Header>
       <Message info>
         <p>알파 서비스 중입니다!</p>
       </Message>

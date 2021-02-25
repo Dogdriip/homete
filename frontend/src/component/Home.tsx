@@ -58,8 +58,7 @@ const Home = (): JSX.Element => {
               <Card.Description>
                 @{userProfile.screen_name}으로 로그인 완료!{" "}
                 <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>를
-                확인해 보세요.
-                <LogoutButton />
+                확인해 보세요. <LogoutButton />
               </Card.Description>
             </Card.Content>
           </Card>
