@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "semantic-ui-react";
-import LoginWithTwitterButton from "./LoginWithTwitterButton";
-import { userState } from "../state/userState";
+import LoginWithTwitterButton from "./buttons/LoginWithTwitterButton";
 import { useRecoilState } from "recoil";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "./buttons/LogoutButton";
 import { Link } from "react-router-dom";
 import { userProfileState } from "../state/userProfileState";
 import { UserProfile } from "../entities/UserProfile";
 import LoadingCard from "./cards/LoadingCard";
 
 const Home = (): JSX.Element => {
-  const [user, setUser] = useRecoilState(userState);
   const [userProfile, setUserProfile] = useRecoilState(userProfileState);
   const [pending, setPending] = useState<boolean>(true);
 
@@ -27,20 +25,17 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged((firebaseUser) => {
       if (firebaseUser) {
-        setUser({ uid: firebaseUser.uid });
         updateUserProfile(firebaseUser.uid);
       }
       setPending(false);
     });
-
-    console.log(user);
   }, []);
 
   return (
     <Card.Group centered>
       {pending ? (
         <LoadingCard />
-      ) : !user || !user.uid ? (
+      ) : !userProfile || !userProfile.uid ? (
         <Card fluid color="blue">
           <Card.Content>
             <Card.Header>트위터로 로그인</Card.Header>

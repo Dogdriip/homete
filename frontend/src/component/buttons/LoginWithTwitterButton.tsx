@@ -2,13 +2,11 @@ import { Button, Icon } from "semantic-ui-react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { userState } from "../state/userState";
-import { userProfileState } from "../state/userProfileState";
+import { userProfileState } from "../../state/userProfileState";
 import { useRecoilState } from "recoil";
-import { UserProfile } from "../entities/UserProfile";
+import { UserProfile } from "../../entities/UserProfile";
 
 const LoginWithTwitterButton = (): JSX.Element => {
-  const [user, setUser] = useRecoilState(userState);
   const [userProfile, setUserProfile] = useRecoilState(userProfileState);
 
   const loginWithTwitter = async () => {
@@ -22,8 +20,6 @@ const LoginWithTwitterButton = (): JSX.Element => {
       const user = result.user;
       const additionalUserInfo = result.additionalUserInfo;
       const profile = additionalUserInfo.profile;
-
-      setUser({ uid: user.uid }); // set state
 
       const db = firebase.firestore();
       const userProfileVal: UserProfile = {
@@ -47,12 +43,8 @@ const LoginWithTwitterButton = (): JSX.Element => {
     }
   };
 
-  const onLogin = () => {
-    loginWithTwitter();
-  };
-
   return (
-    <Button color="twitter" onClick={onLogin}>
+    <Button color="twitter" onClick={() => loginWithTwitter()}>
       <Icon name="twitter" /> Sign in with Twitter
     </Button>
   );

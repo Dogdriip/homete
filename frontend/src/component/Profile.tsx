@@ -5,11 +5,12 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import type { UserProfile } from "../entities/UserProfile";
 import { useRecoilState } from "recoil";
-import { userState } from "../state/userState";
 import { userProfileState } from "../state/userProfileState";
 import LoadingCard from "./cards/LoadingCard";
 import HometeCard from "./cards/HometeCard";
 import { Homete } from "../entities/Homete";
+import ProfileCard from "./cards/ProfileCard";
+import SendHometeCard from "./cards/SendHometeCard";
 
 const Profile = ({ match }) => {
   const { username }: { username: string } = match.params;
@@ -17,7 +18,6 @@ const Profile = ({ match }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [hometes, setHometes] = useState<Homete[]>();
   const [pending, setPending] = useState<boolean>(true);
-  const [description, setDescription] = useState<string>("");
 
   const getUserProfile = async (
     username: string
@@ -52,26 +52,6 @@ const Profile = ({ match }) => {
     return hometes;
   };
 
-  const onSend = () => {
-    const db = firebase.firestore();
-    db.collection("hometes")
-      .doc()
-      .set({
-        recipient: profile.screen_name,
-        description: description,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-        getHometes(username).then((data) => {
-          setHometes(data);
-        });
-      })
-      .catch((error) => {
-        console.error("Error writing document: ", error);
-      });
-  };
-
   useEffect(() => {
     // Get current page's user profile.
     getUserProfile(username).then((data) => {
@@ -90,37 +70,33 @@ const Profile = ({ match }) => {
         <LoadingCard />
       ) : profile ? (
         <>
+          <ProfileCard {...profile} />
+          <SendHometeCard recipient={profile.screen_name} />
+          {hometes.length == 0 ? (
+            <Card fluid color="blue">
+              <Card.Content>
+                <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>
+              </Card.Content>
+            </Card>
+          ) : (
+            hometes
+              .filter((homete) => homete.resolved)
+              .map((homete) => <HometeCard key={1} {...homete} />)
+          )}
           <Card fluid color="blue">
             <Card.Content>
-              <Image
-                floated="left"
-                size="tiny"
-                circular
-                src={profile.profile_image_url}
-              />
-              <Card.Header as="h1">{profile.name}</Card.Header>
+              <Card.Header as="h1">새로 도착한 칭찬들</Card.Header>
               <Card.Meta>
-                <Label>@{profile.screen_name}</Label>
+                승인한 칭찬은 바로 트위터에 게시되고, 자신의 프로필에
+                나타납니다.
               </Card.Meta>
-              <Card.Description>{profile.description}</Card.Description>
+              {hometes
+                .filter((homete) => !homete.resolved)
+                .map((homete) => (
+                  <HometeCard key={1} {...homete} />
+                ))}
             </Card.Content>
           </Card>
-          <Card fluid color="blue">
-            <Card.Content>
-              <Input
-                fluid
-                action={{
-                  icon: "send",
-                  onClick: onSend,
-                }}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="익명으로 칭찬하기..."
-              />
-            </Card.Content>
-          </Card>
-          {hometes.map((homete) => (
-            <HometeCard key={1} {...homete} />
-          ))}
         </>
       ) : (
         <Card fluid color="blue">
