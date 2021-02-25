@@ -1,14 +1,9 @@
 import { atom } from "recoil";
-
-type User = {
-  name: string;
-};
+import type { User } from "../entities/User";
 
 const userState = atom<User | null>({
   key: "userState",
-  default: {
-    name: null,
-  },
+  default: null,
 });
 
 export { userState };

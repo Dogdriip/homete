@@ -3,11 +3,15 @@ import { Route } from "react-router-dom";
 import "./App.css";
 import Home from "./component/Home";
 import Profile from "./component/Profile";
-import { Container } from "semantic-ui-react";
+import { Container, Header, Message } from "semantic-ui-react";
 
 const App = () => {
   return (
     <Container text style={{ margin: 20 }}>
+      <Header as="h1">서비스 이름은 아직 비밀!</Header>
+      <Message info>
+        <p>알파 서비스 중입니다!</p>
+      </Message>
       <Route path="/" component={Home} exact />
       <Route path="/:username" component={Profile} exact />
     </Container>
@@ -49,30 +53,8 @@ const App = () => {
                 </Card.Description>
               </Card.Content>
             </Card>
-            <Card fluid color="blue">
-              <Card.Content>
-                <Image
-                  floated="left"
-                  size="tiny"
-                  circular
-                  src={state.user.profile_image_url}
-                />
-                <Card.Header as="h1">{state.user.name}</Card.Header>
-                <Card.Meta>
-                  <Label>@{state.user.screen_name}</Label>
-                </Card.Meta>
-                <Card.Description>{state.user.description}</Card.Description>
-              </Card.Content>
-            </Card>
           </>
         )}
-
-        <Card fluid color="blue">
-          <Card.Content>
-            <Card.Header>어떤 서비스인가요?</Card.Header>
-            <Card.Description>저도 몰라요!</Card.Description>
-          </Card.Content>
-        </Card>
 
         <Card fluid color="blue">
           <Card.Content>
