@@ -53,20 +53,22 @@ const Home = (): JSX.Element => {
           </Card.Content>
         </Card>
       ) : (
-        <Card fluid color="blue">
-          <Card.Content>
-            <Card.Header>트위터로 로그인</Card.Header>
-            <Card.Meta>
-              트위터로 로그인해야 서비스를 사용할 수 있어요!
-            </Card.Meta>
-            <Card.Description>
-              로그인 완료!{" "}
-              <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>를
-              확인해 보세요.
-              <LogoutButton />
-            </Card.Description>
-          </Card.Content>
-        </Card>
+        <>
+          <Card fluid color="blue">
+            <Card.Content>
+              <Card.Header>트위터로 로그인</Card.Header>
+              <Card.Meta>
+                트위터로 로그인해야 서비스를 사용할 수 있어요!
+              </Card.Meta>
+              <Card.Description>
+                @{userProfile.screen_name}으로 로그인 완료!{" "}
+                <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>를
+                확인해 보세요.
+                <LogoutButton />
+              </Card.Description>
+            </Card.Content>
+          </Card>
+        </>
       )}
       <Card fluid color="blue">
         <Card.Content>

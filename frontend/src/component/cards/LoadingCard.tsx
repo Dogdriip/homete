@@ -1,16 +1,20 @@
-import { Card } from "semantic-ui-react";
-import Skeleton from "react-loading-skeleton";
+import { Card, Placeholder } from "semantic-ui-react";
 
 const LoadingCard = () => {
   return (
     <Card fluid color="blue">
       <Card.Content>
-        <Card.Header>
-          <Skeleton />
-        </Card.Header>
-        <Card.Description>
-          <Skeleton count={3} />
-        </Card.Description>
+        <Placeholder fluid>
+          <Placeholder.Header>
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Header>
+          <Placeholder.Paragraph>
+            <Placeholder.Line />
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Paragraph>
+        </Placeholder>
       </Card.Content>
     </Card>
   );
