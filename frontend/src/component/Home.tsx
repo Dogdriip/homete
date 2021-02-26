@@ -69,7 +69,7 @@ const Home = (): JSX.Element => {
           <Card.Header>어떤 서비스인가요?</Card.Header>
           <Card.Description>
             <List bulleted>
-              <List.Item>모두가 칭찬만 주고받을 수 있는 서비스예요!</List.Item>
+              <List.Item>모두가 칭찬받고 칭찬할 수 있는 플랫폼!</List.Item>
               <List.Item>
                 받은 칭찬은 삭제할 수도 있고, 승인할 수도 있어요.
               </List.Item>
