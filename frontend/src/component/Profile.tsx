@@ -4,19 +4,19 @@ import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import type { UserProfile } from "../entities/UserProfile";
-import { useRecoilState } from "recoil";
-import { userProfileState } from "../state/userProfileState";
 import LoadingCard from "./cards/LoadingCard";
 import HometeCard from "./cards/HometeCard";
 import { Homete } from "../entities/Homete";
 import ProfileCard from "./cards/ProfileCard";
 import SendHometeCard from "./cards/SendHometeCard";
+import { useRecoilState } from "recoil";
+import { hometesState } from "../state/hometesState";
 
 const Profile = ({ match }) => {
   const { username }: { username: string } = match.params;
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [hometes, setHometes] = useState<Homete[]>();
+  const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
   const [pending, setPending] = useState<boolean>(true);
 
   const getUserProfile = async (
@@ -43,7 +43,7 @@ const Profile = ({ match }) => {
 
     let hometes: Homete[] = [];
     querySnapshot.forEach((doc) => {
-      hometes.push(doc.data() as Homete);
+      hometes.push({ id: doc.id, ...doc.data() } as Homete);
     });
     hometes.sort(
       (a: Homete, b: Homete) =>
@@ -81,7 +81,7 @@ const Profile = ({ match }) => {
           ) : (
             hometes
               .filter((homete) => homete.resolved)
-              .map((homete) => <HometeCard key={1} {...homete} />)
+              .map((homete) => <HometeCard key={homete.id} {...homete} />)
           )}
           <Card fluid color="blue">
             <Card.Content>
@@ -93,7 +93,7 @@ const Profile = ({ match }) => {
               {hometes
                 .filter((homete) => !homete.resolved)
                 .map((homete) => (
-                  <HometeCard key={1} {...homete} />
+                  <HometeCard key={homete.id} {...homete} />
                 ))}
             </Card.Content>
           </Card>

@@ -5,6 +5,8 @@ import "firebase/firestore";
 import { userProfileState } from "../../state/userProfileState";
 import { useRecoilState } from "recoil";
 import { UserProfile } from "../../entities/UserProfile";
+import { toast } from "react-semantic-toasts";
+import "react-semantic-toasts/styles/react-semantic-alert.css";
 
 const LoginWithTwitterButton = (): JSX.Element => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileState);
@@ -37,6 +39,13 @@ const LoginWithTwitterButton = (): JSX.Element => {
       await db.collection("users").doc(user.uid).set(userProfileVal);
 
       setUserProfile(userProfileVal);
+      toast({
+        title: "로그인 완료!",
+        type: "success",
+        description: `@${profile["screen_name"]}으로 로그인되었습니다.`,
+        time: 3000,
+        animation: "fade left",
+      });
     } catch (e) {
       console.log(e.code);
       console.log(e.message);

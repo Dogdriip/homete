@@ -1,4 +1,3 @@
-import firebase from "firebase/app";
 import { Card, Image, Label } from "semantic-ui-react";
 import { UserProfile } from "../../entities/UserProfile";
 
