@@ -72,7 +72,7 @@ const Profile = ({ match }) => {
         <>
           <ProfileCard {...profile} />
           <SendHometeCard recipient={profile.screen_name} />
-          {hometes.length == 0 ? (
+          {hometes.length === 0 ? (
             <Card fluid color="blue">
               <Card.Content>
                 <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>

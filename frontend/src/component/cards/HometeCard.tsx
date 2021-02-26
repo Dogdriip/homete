@@ -1,5 +1,5 @@
 import firebase from "firebase/app";
-import { Button, Card, Icon } from "semantic-ui-react";
+import { Button, Card, Icon, Transition } from "semantic-ui-react";
 import { Homete } from "../../entities/Homete";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
@@ -12,7 +12,7 @@ const HometeCard = ({
   resolved,
   timestamp,
 }: Homete) => {
-  const [complete, setComplete] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(true);
   const timestampStr = timestamp.toDate().toLocaleString();
 
   const onDelete = () => {
@@ -28,7 +28,7 @@ const HometeCard = ({
           time: 3000,
           animation: "fade left",
         });
-        setComplete(true);
+        setVisible(false);
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
@@ -50,7 +50,7 @@ const HometeCard = ({
           time: 3000,
           animation: "fade left",
         });
-        setComplete(true);
+        setVisible(false);
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
@@ -58,7 +58,7 @@ const HometeCard = ({
   };
 
   return (
-    !complete && (
+    <Transition visible={visible} animation="fade right" duration={500}>
       <Card fluid>
         <Card.Content>
           <Card.Description>{description}</Card.Description>
@@ -78,7 +78,7 @@ const HometeCard = ({
           </Button.Group>
         )}
       </Card>
-    )
+    </Transition>
   );
 };
 

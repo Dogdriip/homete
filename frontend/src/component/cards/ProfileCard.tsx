@@ -1,4 +1,4 @@
-import { Card, Image, Label } from "semantic-ui-react";
+import { Card, Image, Label, Grid } from "semantic-ui-react";
 import { UserProfile } from "../../entities/UserProfile";
 
 const ProfileCard = (profile: UserProfile) => {
@@ -9,9 +9,11 @@ const ProfileCard = (profile: UserProfile) => {
           floated="left"
           size="tiny"
           circular
-          src={profile.profile_image_url}
+          src={profile.profile_image_url_https}
         />
-        <Card.Header as="h1">{profile.name}</Card.Header>
+        <Card.Header as="h1" style={{ "margin-top": 5 }}>
+          {profile.name}
+        </Card.Header>
         <Card.Meta>
           <Label>@{profile.screen_name}</Label>
         </Card.Meta>
