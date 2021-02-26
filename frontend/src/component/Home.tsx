@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "semantic-ui-react";
+import { Card, List } from "semantic-ui-react";
 import LoginWithTwitterButton from "./buttons/LoginWithTwitterButton";
 import { useRecoilState } from "recoil";
 import firebase from "firebase/app";
@@ -67,7 +67,31 @@ const Home = (): JSX.Element => {
       <Card fluid color="blue">
         <Card.Content>
           <Card.Header>어떤 서비스인가요?</Card.Header>
-          <Card.Description>저도 몰라요!</Card.Description>
+          <Card.Description>
+            <List bulleted>
+              <List.Item>모두가 칭찬만 주고받을 수 있는 서비스예요!</List.Item>
+              <List.Item>
+                받은 칭찬은 삭제할 수도 있고, 승인할 수도 있어요.
+              </List.Item>
+              <List.Item>
+                승인한 칭찬은 바로 자신의 트위터에 게시되고, 프로필에도
+                나타나요.
+              </List.Item>
+            </List>
+          </Card.Description>
+        </Card.Content>
+      </Card>
+      <Card fluid color="blue">
+        <Card.Content>
+          <Card.Header>어떻게 사용하나요?</Card.Header>
+          <Card.Description>
+            <List bulleted>
+              <List.Item>
+                트위터로 로그인하기만 하면 가입이 완료되고, 자신의 페이지가
+                생겨요.
+              </List.Item>
+            </List>
+          </Card.Description>
         </Card.Content>
       </Card>
     </Card.Group>

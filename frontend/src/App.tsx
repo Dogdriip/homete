@@ -5,13 +5,12 @@ import Home from "./component/Home";
 import Profile from "./component/Profile";
 import { Container, Header, Message } from "semantic-ui-react";
 import { SemanticToastContainer } from "react-semantic-toasts";
-import "react-semantic-toasts/styles/react-semantic-alert.css";
 
 const App = () => {
   return (
     <>
       <Container text style={{ margin: 20 }}>
-        <Header as="h1">⚔️소드마스터여, 영원하라⚔️</Header>
+        <Header as="h1">homete!</Header>
         <Message info>
           <p>알파 서비스 중입니다!</p>
         </Message>
