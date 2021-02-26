@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Card, Image, Label, Icon, Input, Ref } from "semantic-ui-react";
+import { useState, useEffect } from "react";
+import { Card } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import firebase from "firebase/app";
-import "firebase/firestore";
 import type { UserProfile } from "../entities/UserProfile";
 import LoadingCard from "./cards/LoadingCard";
 import HometeCard from "./cards/HometeCard";
@@ -11,6 +9,8 @@ import ProfileCard from "./cards/ProfileCard";
 import SendHometeCard from "./cards/SendHometeCard";
 import { useRecoilState } from "recoil";
 import { hometesState } from "../state/hometesState";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 const Profile = ({ match }) => {
   const { username }: { username: string } = match.params;

@@ -12,8 +12,8 @@ const HometeCard = ({
   resolved,
   timestamp,
 }: Homete) => {
-  const timestampStr = timestamp.toDate().toLocaleString();
   const [complete, setComplete] = useState<boolean>(false);
+  const timestampStr = timestamp.toDate().toLocaleString();
 
   const onDelete = () => {
     const db = firebase.firestore();

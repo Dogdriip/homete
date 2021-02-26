@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, List } from "semantic-ui-react";
 import LoginWithTwitterButton from "./buttons/LoginWithTwitterButton";
-import { useRecoilState } from "recoil";
+import LogoutButton from "./buttons/LogoutButton";
+import { Link } from "react-router-dom";
+import { UserProfile } from "../entities/UserProfile";
+import LoadingCard from "./cards/LoadingCard";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import LogoutButton from "./buttons/LogoutButton";
-import { Link } from "react-router-dom";
-import { userProfileState } from "../state/userProfileState";
-import { UserProfile } from "../entities/UserProfile";
-import LoadingCard from "./cards/LoadingCard";
 
 const Home = (): JSX.Element => {
-  const [userProfile, setUserProfile] = useRecoilState(userProfileState);
+  const [userProfile, setUserProfile] = useState<UserProfile>(null);
   const [pending, setPending] = useState<boolean>(true);
 
-  const updateUserProfile = async (uid: string) => {
-    const db = firebase.firestore();
-    const doc = await db.collection("users").doc(uid).get();
-    const data = doc.data() as UserProfile;
-    setUserProfile(data);
-  };
-
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((firebaseUser) => {
+    firebase.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        updateUserProfile(firebaseUser.uid);
+        const db = firebase.firestore();
+        const doc = await db.collection("users").doc(firebaseUser.uid).get();
+        const data = doc.data() as UserProfile;
+        setUserProfile(data);
+      } else {
+        setUserProfile(null);
       }
       setPending(false);
     });
@@ -35,7 +31,7 @@ const Home = (): JSX.Element => {
     <Card.Group centered>
       {pending ? (
         <LoadingCard />
-      ) : !userProfile || !userProfile.uid ? (
+      ) : !userProfile ? (
         <Card fluid color="blue">
           <Card.Content>
             <Card.Header>트위터로 로그인</Card.Header>

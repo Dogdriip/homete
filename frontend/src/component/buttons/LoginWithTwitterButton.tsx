@@ -1,16 +1,12 @@
 import { Button, Icon } from "semantic-ui-react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import { userProfileState } from "../../state/userProfileState";
-import { useRecoilState } from "recoil";
 import { UserProfile } from "../../entities/UserProfile";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const LoginWithTwitterButton = (): JSX.Element => {
-  const [userProfile, setUserProfile] = useRecoilState(userProfileState);
-
   const loginWithTwitter = async () => {
     const provider = new firebase.auth.TwitterAuthProvider();
     try {
@@ -38,7 +34,6 @@ const LoginWithTwitterButton = (): JSX.Element => {
       };
       await db.collection("users").doc(user.uid).set(userProfileVal);
 
-      setUserProfile(userProfileVal);
       toast({
         title: "로그인 완료!",
         type: "success",
