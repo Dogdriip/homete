@@ -90,6 +90,7 @@ const Profile = ({ match }) => {
           {pendingHometes ? (
             <LoadingCard />
           ) : (
+            firebase.auth().currentUser &&
             profile.uid === firebase.auth().currentUser.uid && (
               <Card fluid color="blue">
                 <Card.Content>
