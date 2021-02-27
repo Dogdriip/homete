@@ -13,6 +13,7 @@ const HometeCard = ({
   timestamp,
 }: Homete) => {
   const [visible, setVisible] = useState<boolean>(true);
+
   const timestampStr = timestamp.toDate().toLocaleString();
 
   const onDelete = () => {
@@ -43,10 +44,14 @@ const HometeCard = ({
         resolved: true,
       })
       .then(() => {
+        // Send to twitter.
+        const text = `칭찬받았어요! 😊 — ${description}`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURI(text)}`);
+
         toast({
           title: "승인 완료!",
           type: "success",
-          description: "칭찬이 승인되고 트위터에 게시되었습니다.",
+          description: "칭찬이 승인되었습니다.",
           time: 3000,
           animation: "fade left",
         });

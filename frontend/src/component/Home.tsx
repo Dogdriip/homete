@@ -36,7 +36,7 @@ const Home = (): JSX.Element => {
           <Card.Content>
             <Card.Header>트위터로 로그인</Card.Header>
             <Card.Meta>
-              트위터로 로그인해야 서비스를 사용할 수 있어요!
+              트위터로 로그인하면 자신의 페이지를 확인할 수 있어요!
             </Card.Meta>
             <Card.Description>
               <LoginWithTwitterButton />
@@ -49,7 +49,7 @@ const Home = (): JSX.Element => {
             <Card.Content>
               <Card.Header>트위터로 로그인</Card.Header>
               <Card.Meta>
-                트위터로 로그인해야 서비스를 사용할 수 있어요!
+                트위터로 로그인하면 자신의 페이지를 확인할 수 있어요!
               </Card.Meta>
               <Card.Description>
                 @{userProfile.screen_name}으로 로그인 완료!{" "}
@@ -70,8 +70,7 @@ const Home = (): JSX.Element => {
                 받은 칭찬은 삭제할 수도 있고, 승인할 수도 있어요.
               </List.Item>
               <List.Item>
-                승인한 칭찬은 바로 자신의 트위터에 게시되고, 프로필에도
-                나타나요.
+                승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도 있어요.
               </List.Item>
             </List>
           </Card.Description>

@@ -15,6 +15,11 @@ const LoginWithTwitterButton = (): JSX.Element => {
         .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       const result = await firebase.auth().signInWithPopup(provider);
 
+      const credential: firebase.auth.OAuthCredential = result.credential;
+
+      const token = credential.accessToken;
+      const secret = credential.secret;
+
       const user = result.user;
       const additionalUserInfo = result.additionalUserInfo;
       const profile = additionalUserInfo.profile;

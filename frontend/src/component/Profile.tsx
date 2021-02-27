@@ -87,8 +87,7 @@ const Profile = ({ match }) => {
             <Card.Content>
               <Card.Header as="h1">새로 도착한 칭찬들</Card.Header>
               <Card.Meta>
-                승인한 칭찬은 바로 트위터에 게시되고, 자신의 프로필에
-                나타납니다.
+                승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도 있어요.
               </Card.Meta>
               {hometes
                 .filter((homete) => !homete.resolved)
