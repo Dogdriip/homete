@@ -11,11 +11,14 @@ import { useRecoilState } from "recoil";
 import { hometesState } from "../state/hometesState";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import { userProfileState } from "../state/userProfileState";
 
 const Profile = ({ match }) => {
   const { username }: { username: string } = match.params;
 
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useRecoilState<UserProfile | null>(
+    userProfileState
+  );
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
   const [pending, setPending] = useState<boolean>(true);
   const [pendingHometes, setPendingHometes] = useState<boolean>(true);

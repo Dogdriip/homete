@@ -4,6 +4,9 @@ import { Homete } from "../../entities/Homete";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { UserProfile } from "../../entities/UserProfile";
+import { userProfileState } from "../../state/userProfileState";
 
 const HometeCard = ({
   id,
@@ -13,6 +16,9 @@ const HometeCard = ({
   timestamp,
 }: Homete) => {
   const [visible, setVisible] = useState<boolean>(true);
+  const [profile, setProfile] = useRecoilState<UserProfile | null>(
+    userProfileState
+  );
 
   const timestampStr = timestamp.toDate().toLocaleString();
 
@@ -84,11 +90,17 @@ const HometeCard = ({
           <Card.Description>{description}</Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <Icon name="time" /> {timestampStr} {id}
+          <Icon name="time" /> {timestampStr}{" "}
+          {firebase.auth().currentUser &&
+            profile.uid === firebase.auth().currentUser.uid &&
+            id}
           <br />
-          <a onClick={() => onTwitterShare()}>
-            <Icon name="twitter" /> 트위터에 공유하기
-          </a>
+          {firebase.auth().currentUser &&
+            profile.uid === firebase.auth().currentUser.uid && (
+              <a onClick={() => onTwitterShare()}>
+                <Icon name="twitter" /> 트위터에 공유하기
+              </a>
+            )}
         </Card.Content>
         {!resolved && (
           <Button.Group>
