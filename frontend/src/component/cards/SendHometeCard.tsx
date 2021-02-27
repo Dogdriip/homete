@@ -8,6 +8,17 @@ const SendHometeCard = ({ recipient }) => {
   const [description, setDescription] = useState<string>("");
 
   const onSend = () => {
+    if (description.length === 0) {
+      toast({
+        title: "내용을 입력해 주세요!",
+        type: "warning",
+        description: "따뜻한 칭찬 한마디 남겨주세요!",
+        time: 3000,
+        animation: "fade left",
+      });
+      return;
+    }
+
     const db = firebase.firestore();
     db.collection("hometes")
       .doc()
