@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
 import { UserProfile } from "../../entities/UserProfile";
 import { toast } from "react-semantic-toasts";
@@ -7,7 +8,11 @@ import "firebase/auth";
 import "firebase/firestore";
 
 const LoginWithTwitterButton = (): JSX.Element => {
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
   const loginWithTwitter = async () => {
+    setButtonLoading(true);
+
     const provider = new firebase.auth.TwitterAuthProvider();
     try {
       await firebase
@@ -16,7 +21,6 @@ const LoginWithTwitterButton = (): JSX.Element => {
       const result = await firebase.auth().signInWithPopup(provider);
 
       const credential: firebase.auth.OAuthCredential = result.credential;
-
       const token = credential.accessToken;
       const secret = credential.secret;
 
@@ -50,10 +54,15 @@ const LoginWithTwitterButton = (): JSX.Element => {
       console.log(e.code);
       console.log(e.message);
     }
+    setButtonLoading(false);
   };
 
   return (
-    <Button color="twitter" onClick={() => loginWithTwitter()}>
+    <Button
+      color="twitter"
+      loading={buttonLoading}
+      onClick={() => loginWithTwitter()}
+    >
       <Icon name="twitter" /> Sign in with Twitter
     </Button>
   );

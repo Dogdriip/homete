@@ -5,6 +5,7 @@ import LogoutButton from "./buttons/LogoutButton";
 import { Link } from "react-router-dom";
 import { UserProfile } from "../entities/UserProfile";
 import LoadingCard from "./cards/LoadingCard";
+import { TwitterTweetEmbed } from "react-twitter-embed";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -31,7 +32,7 @@ const Home = (): JSX.Element => {
     <Card.Group centered>
       {pending ? (
         <LoadingCard />
-      ) : !userProfile ? (
+      ) : (
         <Card fluid color="blue">
           <Card.Content>
             <Card.Header>트위터로 로그인</Card.Header>
@@ -39,44 +40,24 @@ const Home = (): JSX.Element => {
               트위터로 로그인하면 자신의 페이지를 확인할 수 있어요!
             </Card.Meta>
             <Card.Description>
-              <LoginWithTwitterButton />
+              {!userProfile ? (
+                <LoginWithTwitterButton />
+              ) : (
+                <>
+                  @{userProfile.screen_name}으로 로그인 완료!{" "}
+                  <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>
+                  를 확인해 보세요. <LogoutButton />
+                </>
+              )}
             </Card.Description>
           </Card.Content>
         </Card>
-      ) : (
-        <>
-          <Card fluid color="blue">
-            <Card.Content>
-              <Card.Header>트위터로 로그인</Card.Header>
-              <Card.Meta>
-                트위터로 로그인하면 자신의 페이지를 확인할 수 있어요!
-              </Card.Meta>
-              <Card.Description>
-                @{userProfile.screen_name}으로 로그인 완료!{" "}
-                <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>를
-                확인해 보세요. <LogoutButton />
-              </Card.Description>
-            </Card.Content>
-          </Card>
-        </>
       )}
       <Card fluid>
         <Card.Content>
           <Card.Header>어떤 서비스인가요?</Card.Header>
           <Card.Description>
-            <blockquote className="twitter-tweet">
-              <p lang="ko" dir="ltr">
-                이제 막 배운 React와 TypeScript로 첫 프로젝트를 만들어 봤어요!
-                모두가 칭찬하고 칭찬받을 수 있는 서비스예요. 트위터로 로그인하면
-                자신의 페이지가 생기고, 로그인하지 않아도 익명으로 칭찬을 남길
-                수 있어요.{" "}
-                <a href="https://t.co/njUPhWStbV">https://t.co/njUPhWStbV</a>
-              </p>
-              &mdash; 🐶멍드립! (@__Dogdriiiiip){" "}
-              <a href="https://twitter.com/__Dogdriiiiip/status/1365468991657963524?ref_src=twsrc%5Etfw">
-                February 27, 2021
-              </a>
-            </blockquote>
+            <TwitterTweetEmbed tweetId={"1365468991657963524"} />
             <List bulleted>
               <List.Item>모두가 칭찬받고 칭찬할 수 있는 플랫폼!</List.Item>
               <List.Item>

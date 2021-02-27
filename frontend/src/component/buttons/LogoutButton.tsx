@@ -2,9 +2,13 @@ import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { useState } from "react";
 
 const LogoutButton = (): JSX.Element => {
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
   const logout = async () => {
+    setButtonLoading(true);
     try {
       await firebase.auth().signOut();
       toast({
@@ -17,9 +21,14 @@ const LogoutButton = (): JSX.Element => {
     } catch (e) {
       console.log(e);
     }
+    setButtonLoading(false);
   };
 
-  return <a onClick={() => logout()}>로그아웃</a>;
+  return buttonLoading ? (
+    <span>로딩중...</span>
+  ) : (
+    <a onClick={() => logout()}>로그아웃</a>
+  );
 };
 
 export default LogoutButton;

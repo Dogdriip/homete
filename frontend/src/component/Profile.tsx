@@ -13,7 +13,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { userProfileState } from "../state/userProfileState";
 
-const Profile = ({ match }) => {
+const Profile = ({ match }): JSX.Element => {
   const { username }: { username: string } = match.params;
 
   const [profile, setProfile] = useRecoilState<UserProfile | null>(
