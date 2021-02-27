@@ -1,5 +1,5 @@
 import firebase from "firebase/app";
-import { Button, Card, Icon, Transition } from "semantic-ui-react";
+import { Button, Card, Icon, Label, Transition } from "semantic-ui-react";
 import { Homete } from "../../entities/Homete";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
@@ -46,7 +46,12 @@ const HometeCard = ({
       .then(() => {
         // Send to twitter.
         const text = `칭찬받았어요! 😊 — ${description}`;
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURI(text)}`);
+        const url = `homete.driip.me/${recipient}`;
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURI(
+            text
+          )}&url=${url}&hashtags=homete`
+        );
 
         toast({
           title: "승인 완료!",
@@ -62,6 +67,16 @@ const HometeCard = ({
       });
   };
 
+  const onTwitterShare = () => {
+    const text = `칭찬받았어요! 😊 — ${description}`;
+    const url = `homete.driip.me/${recipient}`;
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURI(
+        text
+      )}&url=${url}&hashtags=homete`
+    );
+  };
+
   return (
     <Transition visible={visible} animation="fade right" duration={500}>
       <Card fluid>
@@ -70,6 +85,10 @@ const HometeCard = ({
         </Card.Content>
         <Card.Content extra>
           <Icon name="time" /> {timestampStr} {id}
+          <br />
+          <a onClick={() => onTwitterShare()}>
+            <Icon name="twitter" /> 트위터에 공유하기
+          </a>
         </Card.Content>
         {!resolved && (
           <Button.Group>
