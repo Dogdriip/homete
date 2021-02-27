@@ -18,6 +18,7 @@ const Profile = ({ match }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
   const [pending, setPending] = useState<boolean>(true);
+  const [pendingHometes, setPendingHometes] = useState<boolean>(true);
 
   const getUserProfile = async (
     username: string
@@ -56,10 +57,11 @@ const Profile = ({ match }) => {
     // Get current page's user profile.
     getUserProfile(username).then((data) => {
       setProfile(data);
+      setPending(false);
       // Get current page's user hometes.
       getHometes(username).then((data) => {
         setHometes(data);
-        setPending(false);
+        setPendingHometes(false);
       });
     });
   }, []);
@@ -72,7 +74,9 @@ const Profile = ({ match }) => {
         <>
           <ProfileCard {...profile} />
           <SendHometeCard recipient={profile.screen_name} />
-          {hometes.length === 0 ? (
+          {pendingHometes ? (
+            <LoadingCard />
+          ) : hometes.filter((homete) => homete.resolved).length === 0 ? (
             <Card fluid color="blue">
               <Card.Content>
                 <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>
@@ -83,19 +87,26 @@ const Profile = ({ match }) => {
               .filter((homete) => homete.resolved)
               .map((homete) => <HometeCard key={homete.id} {...homete} />)
           )}
-          <Card fluid color="blue">
-            <Card.Content>
-              <Card.Header as="h1">새로 도착한 칭찬들</Card.Header>
-              <Card.Meta>
-                승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도 있어요.
-              </Card.Meta>
-              {hometes
-                .filter((homete) => !homete.resolved)
-                .map((homete) => (
-                  <HometeCard key={homete.id} {...homete} />
-                ))}
-            </Card.Content>
-          </Card>
+          {pendingHometes ? (
+            <LoadingCard />
+          ) : (
+            profile.uid === firebase.auth().currentUser.uid && (
+              <Card fluid color="blue">
+                <Card.Content>
+                  <Card.Header as="h1">새로 도착한 칭찬들</Card.Header>
+                  <Card.Meta>
+                    승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도
+                    있어요.
+                  </Card.Meta>
+                  {hometes
+                    .filter((homete) => !homete.resolved)
+                    .map((homete) => (
+                      <HometeCard key={homete.id} {...homete} />
+                    ))}
+                </Card.Content>
+              </Card>
+            )
+          )}
         </>
       ) : (
         <Card fluid color="blue">
