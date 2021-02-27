@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, List } from "semantic-ui-react";
+import { Card, List, Label } from "semantic-ui-react";
 import LoginWithTwitterButton from "./buttons/LoginWithTwitterButton";
 import LogoutButton from "./buttons/LogoutButton";
 import { Link } from "react-router-dom";
@@ -60,7 +60,7 @@ const Home = (): JSX.Element => {
           </Card>
         </>
       )}
-      <Card fluid color="blue">
+      <Card fluid>
         <Card.Content>
           <Card.Header>어떤 서비스인가요?</Card.Header>
           <Card.Description>
@@ -76,7 +76,7 @@ const Home = (): JSX.Element => {
           </Card.Description>
         </Card.Content>
       </Card>
-      <Card fluid color="blue">
+      <Card fluid>
         <Card.Content>
           <Card.Header>어떻게 사용하나요?</Card.Header>
           <Card.Description>
@@ -84,6 +84,18 @@ const Home = (): JSX.Element => {
               <List.Item>
                 트위터로 로그인하기만 하면 가입이 완료되고, 자신의 페이지가
                 생겨요.
+              </List.Item>
+              <List.Item>아직은 미구현된 기능들이 많아요!</List.Item>
+              <List.Item>
+                임시방편으로 불쾌한 칭찬을 받았거나 칭찬 삭제를 원한다면 개발자{" "}
+                <Label
+                  as="a"
+                  href="https://twitter.com/__Dogdriiiiip"
+                  target="_blank"
+                >
+                  @__Dogdriiiiip
+                </Label>
+                에게 연락해 주세요!
               </List.Item>
             </List>
           </Card.Description>
