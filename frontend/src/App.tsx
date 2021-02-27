@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import "./App.css";
 import Home from "./component/Home";
 import Profile from "./component/Profile";
@@ -9,7 +9,11 @@ const App = () => {
   return (
     <>
       <Container text style={{ margin: 20 }}>
-        <Header as="h1">homete!</Header>
+        <Header as="h1">
+          <Link to="/" style={{ color: "black" }}>
+            homete!
+          </Link>
+        </Header>
         <Message info>
           <p>알파 서비스 중입니다!</p>
         </Message>

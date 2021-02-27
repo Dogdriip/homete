@@ -64,6 +64,19 @@ const Home = (): JSX.Element => {
         <Card.Content>
           <Card.Header>어떤 서비스인가요?</Card.Header>
           <Card.Description>
+            <blockquote className="twitter-tweet">
+              <p lang="ko" dir="ltr">
+                이제 막 배운 React와 TypeScript로 첫 프로젝트를 만들어 봤어요!
+                모두가 칭찬하고 칭찬받을 수 있는 서비스예요. 트위터로 로그인하면
+                자신의 페이지가 생기고, 로그인하지 않아도 익명으로 칭찬을 남길
+                수 있어요.{" "}
+                <a href="https://t.co/njUPhWStbV">https://t.co/njUPhWStbV</a>
+              </p>
+              &mdash; 🐶멍드립! (@__Dogdriiiiip){" "}
+              <a href="https://twitter.com/__Dogdriiiiip/status/1365468991657963524?ref_src=twsrc%5Etfw">
+                February 27, 2021
+              </a>
+            </blockquote>
             <List bulleted>
               <List.Item>모두가 칭찬받고 칭찬할 수 있는 플랫폼!</List.Item>
               <List.Item>
@@ -86,8 +99,17 @@ const Home = (): JSX.Element => {
                 생겨요.
               </List.Item>
               <List.Item>아직은 미구현된 기능들이 많아요!</List.Item>
+            </List>
+          </Card.Description>
+        </Card.Content>
+      </Card>
+      <Card fluid>
+        <Card.Content>
+          <Card.Header>불편 사항 및 건의 접수는요?</Card.Header>
+          <Card.Description>
+            <List bulleted>
               <List.Item>
-                임시방편으로 불쾌한 칭찬을 받았거나 칭찬 삭제를 원한다면 개발자{" "}
+                불쾌한 칭찬을 받았거나 칭찬 삭제를 원한다면 개발자{" "}
                 <Label
                   as="a"
                   href="https://twitter.com/__Dogdriiiiip"
@@ -96,6 +118,10 @@ const Home = (): JSX.Element => {
                   @__Dogdriiiiip
                 </Label>
                 에게 연락해 주세요!
+              </List.Item>
+              <List.Item>
+                불편 사항, 가입이 안 되는 버그, 건의 사항 등 서비스에 관한 모든
+                연락은 환영입니다!
               </List.Item>
             </List>
           </Card.Description>
