@@ -38,7 +38,7 @@ const Profile = ({ match }): JSX.Element => {
     return pf;
   };
 
-  const getHometes = async (username: string) => {
+  const getHometes = async (username: string): Promise<Homete[]> => {
     const db = firebase.firestore();
     const querySnapshot = await db
       .collection("hometes")
@@ -69,65 +69,76 @@ const Profile = ({ match }): JSX.Element => {
     });
   }, []);
 
-  return (
-    <Card.Group centered>
-      {pending ? (
-        <LoadingCard />
-      ) : profile ? (
-        <>
-          <ProfileCard {...profile} />
-          <SendHometeCard recipient={profile.screen_name} />
-          {pendingHometes ? (
-            <LoadingCard />
-          ) : hometes.filter((homete) => homete.resolved).length === 0 ? (
-            <Card fluid color="blue">
-              <Card.Content>
-                <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>
-              </Card.Content>
-            </Card>
-          ) : (
-            hometes
-              .filter((homete) => homete.resolved)
-              .map((homete) => <HometeCard key={homete.id} {...homete} />)
-          )}
-          {pendingHometes ? (
-            <LoadingCard />
-          ) : (
-            firebase.auth().currentUser &&
-            profile.uid === firebase.auth().currentUser.uid && (
-              <Card fluid color="blue">
+  if (pending) {
+    return <LoadingCard />;
+  } else {
+    return (
+      <Card.Group centered>
+        {profile ? (
+          <>
+            <ProfileCard {...profile} />
+            <SendHometeCard recipient={profile.screen_name} />
+            {pendingHometes ? (
+              <LoadingCard />
+            ) : (
+              firebase.auth().currentUser &&
+              profile.uid === firebase.auth().currentUser.uid && (
+                <Card fluid color="blue">
+                  <Card.Content>
+                    <Card.Header as="h1">새로 도착한 칭찬들</Card.Header>
+                    <Card.Meta>
+                      승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도
+                      있어요.
+                    </Card.Meta>
+                    {hometes.filter((homete) => !homete.resolved).length ===
+                    0 ? (
+                      <Card fluid>
+                        <Card.Content>
+                          <Card.Meta>아직 새로 받은 칭찬이 없어요...</Card.Meta>
+                        </Card.Content>
+                      </Card>
+                    ) : (
+                      hometes
+                        .filter((homete) => !homete.resolved)
+                        .map((homete) => (
+                          <HometeCard key={homete.id} {...homete} />
+                        ))
+                    )}
+                  </Card.Content>
+                </Card>
+              )
+            )}
+            {pendingHometes ? (
+              <LoadingCard />
+            ) : hometes.filter((homete) => homete.resolved).length === 0 ? (
+              <Card fluid>
                 <Card.Content>
-                  <Card.Header as="h1">새로 도착한 칭찬들</Card.Header>
-                  <Card.Meta>
-                    승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도
-                    있어요.
-                  </Card.Meta>
-                  {hometes
-                    .filter((homete) => !homete.resolved)
-                    .map((homete) => (
-                      <HometeCard key={homete.id} {...homete} />
-                    ))}
+                  <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>
                 </Card.Content>
               </Card>
-            )
-          )}
-        </>
-      ) : (
-        <Card fluid color="blue">
-          <Card.Content>
-            <Card.Header as="h1">
-              아직 서비스에 가입하지 않은 사용자예요!
-            </Card.Header>
-            <Card.Description>
-              해당 사용자가 아직 서비스에 가입하지 않았어요.{" "}
-              <Link to="/">메인 페이지</Link>에서 트위터 계정으로 로그인하기만
-              하면 가입이 완료돼요.
-            </Card.Description>
-          </Card.Content>
-        </Card>
-      )}
-    </Card.Group>
-  );
+            ) : (
+              hometes
+                .filter((homete) => homete.resolved)
+                .map((homete) => <HometeCard key={homete.id} {...homete} />)
+            )}
+          </>
+        ) : (
+          <Card fluid color="blue">
+            <Card.Content>
+              <Card.Header as="h1">
+                아직 서비스에 가입하지 않은 사용자예요!
+              </Card.Header>
+              <Card.Description>
+                해당 사용자가 아직 서비스에 가입하지 않았어요.{" "}
+                <Link to="/">메인 페이지</Link>에서 트위터 계정으로 로그인하기만
+                하면 가입이 완료돼요.
+              </Card.Description>
+            </Card.Content>
+          </Card>
+        )}
+      </Card.Group>
+    );
+  }
 };
 
 export default Profile;

@@ -57,6 +57,7 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
             loading: buttonLoading,
           }}
           value={description}
+          disabled={buttonLoading}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="익명으로 칭찬하기..."
         />

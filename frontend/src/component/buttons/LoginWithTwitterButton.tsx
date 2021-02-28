@@ -61,6 +61,7 @@ const LoginWithTwitterButton = (): JSX.Element => {
     <Button
       color="twitter"
       loading={buttonLoading}
+      disabled={buttonLoading}
       onClick={() => loginWithTwitter()}
     >
       <Icon name="twitter" /> Sign in with Twitter
