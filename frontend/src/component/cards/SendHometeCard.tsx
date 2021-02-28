@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import { useState } from "react";
-import { Card, Input } from "semantic-ui-react";
+import { Button, Card, Input, Label } from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 
@@ -16,6 +16,17 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
         title: "내용을 입력해 주세요!",
         type: "warning",
         description: "따뜻한 칭찬 한마디 남겨주세요!",
+        time: 3000,
+        animation: "fade left",
+      });
+      return;
+    }
+
+    if (description.length > 100) {
+      toast({
+        title: "칭찬이 너무 길어요!",
+        type: "warning",
+        description: "마음씨가 고우시군요! 여러 번 나눠서 칭찬하는 건 어때요?",
         time: 3000,
         animation: "fade left",
       });
@@ -51,16 +62,19 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
         <Input
           fluid
           type="text"
-          action={{
-            icon: "send",
-            onClick: onSend,
-            loading: buttonLoading,
-          }}
           value={description}
-          disabled={buttonLoading}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="익명으로 칭찬하기..."
-        />
+          disabled={buttonLoading}
+          action
+        >
+          <input />
+          <Button
+            icon="send"
+            onClick={() => onSend()}
+            loading={buttonLoading}
+          />
+        </Input>
       </Card.Content>
     </Card>
   );

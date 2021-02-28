@@ -1,5 +1,12 @@
 import firebase from "firebase/app";
-import { Button, Card, Icon, Label, Transition } from "semantic-ui-react";
+import {
+  Button,
+  Card,
+  Icon,
+  Label,
+  Popup,
+  Transition,
+} from "semantic-ui-react";
 import { Homete } from "../../entities/Homete";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
@@ -16,6 +23,7 @@ const HometeCard = ({
   timestamp,
 }: Homete) => {
   const [visible, setVisible] = useState<boolean>(true);
+  const [deletePopupVisible, setDeletePopupVisible] = useState<boolean>(false);
   const [profile, setProfile] = useRecoilState<UserProfile | null>(
     userProfileState
   );
@@ -93,13 +101,23 @@ const HometeCard = ({
           <Icon name="time" /> {timestampStr}{" "}
           {firebase.auth().currentUser &&
             profile.uid === firebase.auth().currentUser.uid &&
-            id}
-          <br />
-          {firebase.auth().currentUser &&
-            profile.uid === firebase.auth().currentUser.uid && (
-              <a onClick={() => onTwitterShare()}>
-                <Icon name="twitter" /> 트위터에 공유하기
-              </a>
+            resolved && (
+              <>
+                <br />
+                <a onClick={() => onTwitterShare()}>
+                  <Icon name="twitter" />
+                </a>
+                <Popup
+                  content={"고유 ID: " + id}
+                  on="click"
+                  pinned
+                  trigger={
+                    <a>
+                      <Icon name="info circle" />
+                    </a>
+                  }
+                />
+              </>
             )}
         </Card.Content>
         {!resolved && (
