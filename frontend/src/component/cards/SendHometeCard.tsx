@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import { useState } from "react";
-import { Button, Card, Input, Label } from "semantic-ui-react";
+import { Button, Card, Input, Label, List } from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 
@@ -19,6 +19,7 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
         time: 3000,
         animation: "fade left",
       });
+      setButtonLoading(false);
       return;
     }
 
@@ -30,6 +31,7 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
         time: 3000,
         animation: "fade left",
       });
+      setButtonLoading(false);
       return;
     }
 
