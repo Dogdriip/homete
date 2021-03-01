@@ -2,6 +2,14 @@ import { Card, Image, Label } from "semantic-ui-react";
 import { UserProfile } from "../../entities/UserProfile";
 import firebase from "firebase/app";
 
+const randomLabelArr = [
+  <Label color="orange">귀여운 아타시!</Label>,
+  <Label color="teal">멋있는 나님!</Label>,
+  <Label color="pink">깜찍한 와타시!</Label>,
+];
+const randomLabel =
+  randomLabelArr[Math.floor(Math.random() * randomLabelArr.length)];
+
 const ProfileCard = (profile: UserProfile) => {
   return (
     <Card fluid color="blue">
@@ -24,9 +32,8 @@ const ProfileCard = (profile: UserProfile) => {
             @{profile.screen_name}
           </Label>
           {firebase.auth().currentUser &&
-            profile.uid === firebase.auth().currentUser.uid && (
-              <Label color="orange">귀여운 아타시!</Label>
-            )}
+            profile.uid === firebase.auth().currentUser.uid &&
+            randomLabel}
         </Card.Meta>
         <Card.Description>{profile.description}</Card.Description>
       </Card.Content>
