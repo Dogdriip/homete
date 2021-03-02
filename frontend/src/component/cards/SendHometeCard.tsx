@@ -84,7 +84,16 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
             loading={buttonLoading}
           />
         </Input>
-        <Progress value={description.length} total={100} attached="bottom" />
+        <Progress
+          value={description.length}
+          total={100}
+          size="tiny"
+          warning={description.length >= 75}
+          error={description.length >= 90}
+          style={{ marginTop: "10px" }}
+        >
+          {description.length} / 100글자
+        </Progress>
       </Card.Content>
     </Card>
   );
