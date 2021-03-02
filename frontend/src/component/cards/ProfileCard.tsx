@@ -4,7 +4,7 @@ import firebase from "firebase/app";
 
 const randomLabelArr = [
   <Label color="orange">귀여운 아타시!</Label>,
-  <Label color="teal">멋있는 나님!</Label>,
+  <Label color="blue">멋있는 나님!</Label>,
   <Label color="pink">깜찍한 와타시!</Label>,
 ];
 const randomLabel =

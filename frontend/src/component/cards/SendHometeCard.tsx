@@ -1,12 +1,18 @@
 import firebase from "firebase/app";
-import { useState } from "react";
-import { Button, Card, Input, Label, List } from "semantic-ui-react";
+import { KeyboardEvent, useState } from "react";
+import { Button, Card, Input } from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 
 const SendHometeCard = ({ recipient }): JSX.Element => {
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.ctrlKey && e.key === "Enter") {
+      onSend();
+    }
+  };
 
   const onSend = async () => {
     setButtonLoading(true);
@@ -66,6 +72,7 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="익명으로 칭찬하기..."
           disabled={buttonLoading}
           action
