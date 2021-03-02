@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import { KeyboardEvent, useState } from "react";
-import { Button, Card, Input } from "semantic-ui-react";
+import { Button, Card, Input, Progress } from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 
@@ -84,6 +84,7 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
             loading={buttonLoading}
           />
         </Input>
+        <Progress value={description.length} total={100} attached="bottom" />
       </Card.Content>
     </Card>
   );
