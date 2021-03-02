@@ -88,8 +88,8 @@ const SendHometeCard = ({ recipient }): JSX.Element => {
           value={description.length}
           total={100}
           size="tiny"
-          warning={description.length >= 75}
-          error={description.length >= 90}
+          warning={description.length >= 60}
+          error={description.length >= 80}
           style={{ marginTop: "10px" }}
         >
           {description.length} / 100글자
