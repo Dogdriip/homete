@@ -21,7 +21,10 @@ const Profile = ({ match }): JSX.Element => {
   );
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
   const [pending, setPending] = useState<boolean>(true);
-  const [pendingHometes, setPendingHometes] = useState<boolean>(true);
+  const [snapshot, setSnapshot] = useState<firebase.firestore.QuerySnapshot>(
+    null
+  );
+  const [fetchingHometes, setFetchingHometes] = useState<boolean>(true);
 
   const getUserProfile = async (
     username: string
@@ -38,22 +41,45 @@ const Profile = ({ match }): JSX.Element => {
     return pf;
   };
 
-  const getHometes = async (username: string): Promise<Homete[]> => {
+  const fetchHometes = async (username: string) => {
+    setFetchingHometes(true);
     const db = firebase.firestore();
-    const querySnapshot = await db
-      .collection("hometes")
-      .where("recipient", "==", username)
-      .get();
 
-    let hometes: Homete[] = [];
-    querySnapshot.forEach((doc) => {
-      hometes.push({ id: doc.id, ...doc.data() } as Homete);
-    });
-    hometes.sort(
-      (a: Homete, b: Homete) =>
-        b.timestamp.toDate().getTime() - a.timestamp.toDate().getTime()
-    );
-    return hometes;
+    if (!snapshot) {
+      const querySnapshot = await db
+        .collection("hometes")
+        .orderBy("timestamp", "desc")
+        .where("recipient", "==", username)
+        .limit(5)
+        .get();
+
+      setHometes(
+        querySnapshot.docs.map(
+          (doc) => ({ id: doc.id, ...doc.data() } as Homete)
+        )
+      );
+      setSnapshot(querySnapshot);
+    } else {
+      const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      const querySnapshot = await db
+        .collection("hometes")
+        .orderBy("timestamp", "desc")
+        .where("recipient", "==", username)
+        .startAfter(lastVisible)
+        .limit(5)
+        .get();
+
+      setHometes((homete) =>
+        homete.concat(
+          querySnapshot.docs.map(
+            (doc) => ({ id: doc.id, ...doc.data() } as Homete)
+          )
+        )
+      );
+      setSnapshot(querySnapshot);
+    }
+
+    setFetchingHometes(false);
   };
 
   useEffect(() => {
@@ -61,13 +87,29 @@ const Profile = ({ match }): JSX.Element => {
     getUserProfile(username).then((data) => {
       setProfile(data);
       setPending(false);
-      // Get current page's user hometes.
-      getHometes(username).then((data) => {
-        setHometes(data);
-        setPendingHometes(false);
-      });
+
+      // Fetching first 5 hometes.
+      fetchHometes(username);
     });
   }, []);
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight && !fetchingHometes) {
+      console.log("reached");
+      fetchHometes(username);
+      console.log(hometes);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
 
   if (pending) {
     return <LoadingCard />;
@@ -78,10 +120,7 @@ const Profile = ({ match }): JSX.Element => {
           <>
             <ProfileCard {...profile} />
             <SendHometeCard recipient={profile.screen_name} />
-            {pendingHometes ? (
-              <LoadingCard />
-            ) : (
-              firebase.auth().currentUser &&
+            {firebase.auth().currentUser &&
               profile.uid === firebase.auth().currentUser.uid && (
                 <Card fluid color="blue">
                   <Card.Content>
@@ -106,11 +145,8 @@ const Profile = ({ match }): JSX.Element => {
                     )}
                   </Card.Content>
                 </Card>
-              )
-            )}
-            {pendingHometes ? (
-              <LoadingCard />
-            ) : hometes.filter((homete) => homete.resolved).length === 0 ? (
+              )}
+            {hometes.filter((homete) => homete.resolved).length === 0 ? (
               <Card fluid>
                 <Card.Content>
                   <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>

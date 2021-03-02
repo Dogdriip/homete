@@ -3,7 +3,7 @@ import type { Homete } from "../entities/Homete";
 
 const hometesState = atom<Homete[] | null>({
   key: "hometesState",
-  default: null,
+  default: [],
 });
 
 export { hometesState };
