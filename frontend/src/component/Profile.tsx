@@ -12,6 +12,8 @@ import { hometesState } from "../state/hometesState";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { userProfileState } from "../state/userProfileState";
+import { unresolvedHometesState } from "../state/unresolvedHometesState";
+import { resolvedHometesState } from "../state/resolvedHometesState";
 
 const Profile = ({ match }): JSX.Element => {
   const { username }: { username: string } = match.params;
@@ -20,6 +22,12 @@ const Profile = ({ match }): JSX.Element => {
     userProfileState
   );
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
+  const [unresolvedHometes, setUnresolvedHometes] = useRecoilState<Homete[]>(
+    unresolvedHometesState
+  );
+  const [resolvedhometes, setResolvedHometes] = useRecoilState<Homete[]>(
+    resolvedHometesState
+  );
   const [pending, setPending] = useState<boolean>(true);
   const [snapshot, setSnapshot] = useState<firebase.firestore.QuerySnapshot>(
     null
@@ -61,6 +69,10 @@ const Profile = ({ match }): JSX.Element => {
       setSnapshot(querySnapshot);
     } else {
       const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      if (lastVisible === undefined) {
+        setFetchingHometes(false);
+        return;
+      }
       const querySnapshot = await db
         .collection("hometes")
         .orderBy("timestamp", "desc")
@@ -98,9 +110,7 @@ const Profile = ({ match }): JSX.Element => {
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight && !fetchingHometes) {
-      console.log("reached");
       fetchHometes(username);
-      console.log(hometes);
     }
   };
 
@@ -110,6 +120,11 @@ const Profile = ({ match }): JSX.Element => {
       window.removeEventListener("scroll", handleScroll);
     };
   });
+
+  useEffect(() => {
+    setUnresolvedHometes(hometes.filter((homete) => !homete.resolved));
+    setResolvedHometes(hometes.filter((homete) => homete.resolved));
+  }, [hometes]);
 
   if (pending) {
     return <LoadingCard />;
@@ -129,34 +144,32 @@ const Profile = ({ match }): JSX.Element => {
                       승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도
                       있어요.
                     </Card.Meta>
-                    {hometes.filter((homete) => !homete.resolved).length ===
-                    0 ? (
+                    {unresolvedHometes.length === 0 ? (
                       <Card fluid>
                         <Card.Content>
                           <Card.Meta>아직 새로 받은 칭찬이 없어요...</Card.Meta>
                         </Card.Content>
                       </Card>
                     ) : (
-                      hometes
-                        .filter((homete) => !homete.resolved)
-                        .map((homete) => (
-                          <HometeCard key={homete.id} {...homete} />
-                        ))
+                      unresolvedHometes.map((homete) => (
+                        <HometeCard key={homete.id} {...homete} />
+                      ))
                     )}
                   </Card.Content>
                 </Card>
               )}
-            {hometes.filter((homete) => homete.resolved).length === 0 ? (
+            {resolvedhometes.length === 0 ? (
               <Card fluid>
                 <Card.Content>
                   <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>
                 </Card.Content>
               </Card>
             ) : (
-              hometes
-                .filter((homete) => homete.resolved)
-                .map((homete) => <HometeCard key={homete.id} {...homete} />)
+              resolvedhometes.map((homete) => (
+                <HometeCard key={homete.id} {...homete} />
+              ))
             )}
+            {fetchingHometes && <LoadingCard />}
           </>
         ) : (
           <Card fluid color="blue">
