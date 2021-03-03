@@ -20,7 +20,7 @@ const App = () => {
           </Link>
         </Header>
         <Message info>
-          <p>알파 서비스 중입니다!</p>
+          <p>베타 서비스 중입니다!</p>
         </Message>
         <Route path="/" component={Home} exact />
         <Route path="/:username" component={Profile} exact />
