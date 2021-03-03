@@ -14,6 +14,7 @@ import "firebase/firestore";
 import { userProfileState } from "../state/userProfileState";
 import { unresolvedHometesState } from "../state/unresolvedHometesState";
 import { resolvedHometesState } from "../state/resolvedHometesState";
+import { setMaxListeners } from "process";
 
 const Profile = ({ match }): JSX.Element => {
   const { username }: { username: string } = match.params;
@@ -103,6 +104,49 @@ const Profile = ({ match }): JSX.Element => {
       // Fetching first 5 hometes.
       fetchHometes(username);
     });
+
+    // Set listener.
+    const db = firebase.firestore();
+    const listener = db
+      .collection("hometes")
+      .orderBy("timestamp", "desc")
+      .where("recipient", "==", username)
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            // Not yet for server. See https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+          }
+          if (change.type === "modified") {
+            // Received from server.
+            Notification.requestPermission().then((result) => {
+              console.log(result);
+              const notification = new Notification(
+                "새로운 칭찬이 도착했어요!",
+                {
+                  icon:
+                    "https://firebasestorage.googleapis.com/v0/b/homete-9bace.appspot.com/o/homete_icon.jpg?alt=media&token=af685340-c05b-45ba-94e6-9b2b77aad598",
+                  body: change.doc.data().description,
+                }
+              );
+              notification.onclick = function () {
+                window.open(`https://homete.driip.me/${username}`);
+              };
+            });
+            console.log("Modified homete: ", change.doc.data());
+            setHometes(
+              querySnapshot.docs.map(
+                (doc) => ({ id: doc.id, ...doc.data() } as Homete)
+              )
+            );
+          }
+          /*
+          if (change.type === "removed") {
+            console.log("Removed homete: ", change.doc.data());
+          } */
+        });
+      });
+
+    return () => listener();
   }, []);
 
   const handleScroll = () => {
