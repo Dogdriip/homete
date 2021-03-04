@@ -102,57 +102,62 @@ const Profile = ({ match }): JSX.Element => {
       setPending(false);
 
       // Fetching first 5 hometes.
-      fetchHometes(username);
-    });
+      fetchHometes(username).then(() => {});
 
-    // Set listener.
-    let listener;
-    if (
-      firebase.auth().currentUser &&
-      profile.uid === firebase.auth().currentUser.uid
-    ) {
-      const db = firebase.firestore();
-      listener = db
-        .collection("hometes")
-        .orderBy("timestamp", "desc")
-        .where("recipient", "==", username)
-        .onSnapshot((querySnapshot) => {
-          querySnapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-              // Not yet for server. See https://firebase.google.com/docs/firestore/query-data/listen#events-local-changes
+      // Set listener.
+      let listener;
+      let initialState: boolean = true;
+      if (
+        firebase.auth().currentUser &&
+        data.uid === firebase.auth().currentUser.uid
+      ) {
+        console.log("listener is available.");
+        const db = firebase.firestore();
+        listener = db
+          .collection("hometes")
+          .orderBy("timestamp", "desc")
+          .where("recipient", "==", username)
+          .onSnapshot((querySnapshot) => {
+            if (initialState) {
+              initialState = false;
+              return;
             }
-            if (change.type === "modified") {
-              // Received from server.
-              Notification.requestPermission().then((result) => {
-                console.log(result);
-                const notification = new Notification(
-                  "새로운 칭찬이 도착했어요!",
-                  {
-                    icon:
-                      "https://firebasestorage.googleapis.com/v0/b/homete-9bace.appspot.com/o/homete_icon.jpg?alt=media&token=af685340-c05b-45ba-94e6-9b2b77aad598",
-                    body: change.doc.data().description,
-                  }
+
+            querySnapshot.docChanges().forEach((change) => {
+              if (
+                (change.type === "added" &&
+                  !change.doc.metadata.hasPendingWrites) ||
+                change.type === "modified"
+              ) {
+                // Received from server.
+                Notification.requestPermission().then((result) => {
+                  console.log(result);
+                  const notification = new Notification(
+                    "새로운 칭찬이 도착했어요!",
+                    {
+                      icon:
+                        "https://firebasestorage.googleapis.com/v0/b/homete-9bace.appspot.com/o/homete_icon.jpg?alt=media&token=af685340-c05b-45ba-94e6-9b2b77aad598",
+                      body: change.doc.data().description,
+                    }
+                  );
+                  notification.onclick = function () {
+                    window.open(`https://homete.driip.me/${username}`);
+                  };
+                });
+                console.log("Modified homete: ", change.doc.data());
+                setHometes(
+                  querySnapshot.docs.map(
+                    (doc) => ({ id: doc.id, ...doc.data() } as Homete)
+                  )
                 );
-                notification.onclick = function () {
-                  window.open(`https://homete.driip.me/${username}`);
-                };
-              });
-              console.log("Modified homete: ", change.doc.data());
-              setHometes(
-                querySnapshot.docs.map(
-                  (doc) => ({ id: doc.id, ...doc.data() } as Homete)
-                )
-              );
-            }
-            /*
-            if (change.type === "removed") {
-              console.log("Removed homete: ", change.doc.data());
-            } */
+              }
+              if (change.type === "removed") {
+                console.log("Removed homete: ", change.doc.data());
+              }
+            });
           });
-        });
-    }
-
-    return () => listener();
+      }
+    });
   }, []);
 
   const handleScroll = () => {
