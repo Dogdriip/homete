@@ -32,6 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-dev": "dotenv -e .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "node -e \"if(require('fs').existsSync('.git')){process.exit(1)}\" || is-ci || husky install"
@@ -55,6 +56,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-twitter-auth": "^0.0.1"
+    "@types/react-twitter-auth": "^0.0.1",
+    "dotenv-cli": "^4.0.0"
   }
 }

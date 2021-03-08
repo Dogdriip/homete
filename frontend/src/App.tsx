@@ -7,9 +7,10 @@ import { SemanticToastContainer } from "react-semantic-toasts";
 import { useEffect } from "react";
 
 const App = () => {
+  /*
   useEffect(() => {
     Notification.requestPermission();
-  }, []);
+  }, []); */
 
   return (
     <>

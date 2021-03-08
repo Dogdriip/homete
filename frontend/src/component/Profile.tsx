@@ -14,7 +14,6 @@ import "firebase/firestore";
 import { userProfileState } from "../state/userProfileState";
 import { unresolvedHometesState } from "../state/unresolvedHometesState";
 import { resolvedHometesState } from "../state/resolvedHometesState";
-import { setMaxListeners } from "process";
 
 const Profile = ({ match }): JSX.Element => {
   const { username }: { username: string } = match.params;
