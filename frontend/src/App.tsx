@@ -1,17 +1,12 @@
+import { useEffect } from "react";
 import { Route, Link } from "react-router-dom";
 import "./App.css";
 import Home from "./component/Home";
 import Profile from "./component/Profile";
 import { Container, Header, Message } from "semantic-ui-react";
 import { SemanticToastContainer } from "react-semantic-toasts";
-import { useEffect } from "react";
 
 const App = () => {
-  /*
-  useEffect(() => {
-    Notification.requestPermission();
-  }, []); */
-
   return (
     <>
       <Container text style={{ margin: 20 }}>
