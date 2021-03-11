@@ -1,9 +1,13 @@
-import { atom } from "recoil";
+import { selector } from "recoil";
 import type { Homete } from "../entities/Homete";
+import { hometesState } from "./hometesState";
 
-const unresolvedHometesState = atom<Homete[] | null>({
+const unresolvedHometesState = selector<Homete[] | null>({
   key: "unresolvedHometesState",
-  default: [],
+  get: ({ get }) => {
+    const hometes = get(hometesState);
+    return hometes.filter((homete) => !homete.resolved);
+  },
 });
 
 export { unresolvedHometesState };
