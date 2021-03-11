@@ -58,7 +58,7 @@ const Profile = ({ match }): JSX.Element => {
         .collection("hometes")
         .orderBy("timestamp", "desc")
         .where("recipient", "==", username)
-        .limit(5)
+        .limit(10)
         .get();
 
       setHometes(
@@ -101,7 +101,7 @@ const Profile = ({ match }): JSX.Element => {
       setPending(false);
 
       // Fetching first 5 hometes.
-      fetchHometes(username).then(() => {});
+      fetchHometes(username);
     });
   }, []);
 
@@ -109,7 +109,7 @@ const Profile = ({ match }): JSX.Element => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight && !fetchingHometes) {
+    if (scrollTop + clientHeight + 100 >= scrollHeight && !fetchingHometes) {
       fetchHometes(username);
     }
   };
