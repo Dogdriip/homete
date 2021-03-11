@@ -22,12 +22,6 @@ const Profile = ({ match }): JSX.Element => {
     userProfileState
   );
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
-  const [unresolvedHometes, setUnresolvedHometes] = useRecoilState<Homete[]>(
-    unresolvedHometesState
-  );
-  const [resolvedhometes, setResolvedHometes] = useRecoilState<Homete[]>(
-    resolvedHometesState
-  );
   const [pending, setPending] = useState<boolean>(true);
   const [snapshot, setSnapshot] = useState<firebase.firestore.QuerySnapshot>(
     null
@@ -100,7 +94,7 @@ const Profile = ({ match }): JSX.Element => {
       setProfile(data);
       setPending(false);
 
-      // Fetching first 5 hometes.
+      // Fetching first 10 hometes.
       fetchHometes(username);
     });
   }, []);
@@ -121,11 +115,6 @@ const Profile = ({ match }): JSX.Element => {
     };
   });
 
-  useEffect(() => {
-    setUnresolvedHometes(hometes.filter((homete) => !homete.resolved));
-    setResolvedHometes(hometes.filter((homete) => homete.resolved));
-  }, [hometes]);
-
   if (pending) {
     return <LoadingCard />;
   } else {
@@ -144,30 +133,33 @@ const Profile = ({ match }): JSX.Element => {
                       승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도
                       있어요.
                     </Card.Meta>
-                    {unresolvedHometes.length === 0 ? (
+                    {hometes.filter((homete) => !homete.resolved).length ===
+                    0 ? (
                       <Card fluid>
                         <Card.Content>
                           <Card.Meta>아직 새로 받은 칭찬이 없어요...</Card.Meta>
                         </Card.Content>
                       </Card>
                     ) : (
-                      unresolvedHometes.map((homete) => (
-                        <HometeCard key={homete.id} {...homete} />
-                      ))
+                      hometes
+                        .filter((homete) => !homete.resolved)
+                        .map((homete) => (
+                          <HometeCard key={homete.id} {...homete} />
+                        ))
                     )}
                   </Card.Content>
                 </Card>
               )}
-            {resolvedhometes.length === 0 ? (
+            {hometes.filter((homete) => homete.resolved).length === 0 ? (
               <Card fluid>
                 <Card.Content>
                   <Card.Meta>아직 받은 칭찬이 없어요...</Card.Meta>
                 </Card.Content>
               </Card>
             ) : (
-              resolvedhometes.map((homete) => (
-                <HometeCard key={homete.id} {...homete} />
-              ))
+              hometes
+                .filter((homete) => homete.resolved)
+                .map((homete) => <HometeCard key={homete.id} {...homete} />)
             )}
             {fetchingHometes && <LoadingCard />}
           </>

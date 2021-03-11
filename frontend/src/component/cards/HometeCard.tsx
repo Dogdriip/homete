@@ -1,12 +1,5 @@
 import firebase from "firebase/app";
-import {
-  Button,
-  Card,
-  Icon,
-  Label,
-  Popup,
-  Transition,
-} from "semantic-ui-react";
+import { Button, Card, Icon, Popup } from "semantic-ui-react";
 import { Homete } from "../../entities/Homete";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
@@ -14,6 +7,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { UserProfile } from "../../entities/UserProfile";
 import { userProfileState } from "../../state/userProfileState";
+import { hometesState } from "../../state/hometesState";
 
 const HometeCard = ({
   id,
@@ -22,8 +16,7 @@ const HometeCard = ({
   resolved,
   timestamp,
 }: Homete) => {
-  const [visible, setVisible] = useState<boolean>(true);
-  const [deletePopupVisible, setDeletePopupVisible] = useState<boolean>(false);
+  const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
   const [profile, setProfile] = useRecoilState<UserProfile | null>(
     userProfileState
   );
@@ -43,7 +36,9 @@ const HometeCard = ({
           time: 3000,
           animation: "fade left",
         });
-        setVisible(false);
+        setHometes((state: Homete[]) =>
+          state.filter((homete: Homete) => homete.id !== id)
+        );
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
@@ -66,7 +61,6 @@ const HometeCard = ({
             text
           )}&url=${url}&hashtags=homete`
         );
-
         toast({
           title: "승인 완료!",
           type: "success",
@@ -74,7 +68,9 @@ const HometeCard = ({
           time: 3000,
           animation: "fade left",
         });
-        setVisible(false);
+        setHometes((state: Homete[]) =>
+          state.filter((homete: Homete) => homete.id !== id)
+        );
       })
       .catch((error) => {
         console.error("Error writing document: ", error);
@@ -92,47 +88,52 @@ const HometeCard = ({
   };
 
   return (
-    <Transition visible={visible} animation="fade right" duration={500}>
-      <Card fluid>
-        <Card.Content>
-          <Card.Description>{description}</Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          <Icon name="time" /> {timestampStr}{" "}
-          {firebase.auth().currentUser &&
-            profile.uid === firebase.auth().currentUser.uid &&
-            resolved && (
-              <>
-                <br />
-                <a onClick={() => onTwitterShare()}>
-                  <Icon name="twitter" />
-                </a>
-                <Popup
-                  content={"고유 ID: " + id}
-                  on="click"
-                  pinned
-                  trigger={
-                    <a>
-                      <Icon name="info circle" />
-                    </a>
-                  }
-                />
-              </>
-            )}
-        </Card.Content>
-        {!resolved && (
-          <Button.Group>
-            <Button negative onClick={() => onDelete()}>
-              삭제
-            </Button>
-            <Button.Or />
-            <Button positive onClick={() => onResolve()}>
-              승인
-            </Button>
-          </Button.Group>
-        )}
-      </Card>
-    </Transition>
+    <Card fluid>
+      <Card.Content>
+        <Card.Description>{description}</Card.Description>
+      </Card.Content>
+      <Card.Content extra>
+        <Icon name="time" /> {timestampStr}{" "}
+        {firebase.auth().currentUser &&
+          profile.uid === firebase.auth().currentUser.uid &&
+          resolved && (
+            <>
+              <br />
+              <a onClick={() => onTwitterShare()}>
+                <Icon name="twitter" />
+              </a>
+              <Popup
+                content={"고유 ID: " + id}
+                on="click"
+                pinned
+                trigger={
+                  <a>
+                    <Icon name="info circle" />
+                  </a>
+                }
+              />
+              <a
+                onClick={() =>
+                  window.confirm("칭찬을 삭제하시겠어요?") && onDelete()
+                }
+              >
+                <Icon name="trash alternate" />
+              </a>
+            </>
+          )}
+      </Card.Content>
+      {!resolved && (
+        <Button.Group>
+          <Button negative onClick={() => onDelete()}>
+            삭제
+          </Button>
+          <Button.Or />
+          <Button positive onClick={() => onResolve()}>
+            승인
+          </Button>
+        </Button.Group>
+      )}
+    </Card>
   );
 };
 
