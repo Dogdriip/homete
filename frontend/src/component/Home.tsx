@@ -6,31 +6,15 @@ import { Link } from "react-router-dom";
 import { UserProfile } from "../entities/UserProfile";
 import LoadingCard from "./cards/LoadingCard";
 import { TwitterTweetEmbed } from "react-twitter-embed";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import { useRecoilState } from "recoil";
+import { userProfileState } from "../states/userProfileState";
 
 const Home = (): JSX.Element => {
-  const [userProfile, setUserProfile] = useState<UserProfile>(null);
-  const [pending, setPending] = useState<boolean>(true);
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(async (firebaseUser) => {
-      if (firebaseUser) {
-        const db = firebase.firestore();
-        const doc = await db.collection("users").doc(firebaseUser.uid).get();
-        const data = doc.data() as UserProfile;
-        setUserProfile(data);
-      } else {
-        setUserProfile(null);
-      }
-      setPending(false);
-    });
-  }, []);
+  const [userProfile, setUserProfile] = useRecoilState(userProfileState);
 
   return (
-    <Card.Group centered>
-      {pending ? (
+    <Card.Group>
+      {userProfile === "PENDING" ? (
         <LoadingCard />
       ) : (
         <Card fluid color="blue">
@@ -43,16 +27,17 @@ const Home = (): JSX.Element => {
               {!userProfile ? (
                 <LoginWithTwitterButton />
               ) : (
-                <>
+                <p>
                   @{userProfile.screen_name}으로 로그인 완료!{" "}
                   <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>
                   를 확인해 보세요. <LogoutButton />
-                </>
+                </p>
               )}
             </Card.Description>
           </Card.Content>
         </Card>
       )}
+
       <Card fluid>
         <Card.Content>
           <Card.Header>어떤 서비스인가요?</Card.Header>
@@ -70,6 +55,7 @@ const Home = (): JSX.Element => {
           </Card.Description>
         </Card.Content>
       </Card>
+
       <Card fluid>
         <Card.Content>
           <Card.Header>어떻게 사용하나요?</Card.Header>
@@ -84,6 +70,7 @@ const Home = (): JSX.Element => {
           </Card.Description>
         </Card.Content>
       </Card>
+
       <Card fluid>
         <Card.Content>
           <Card.Header>불편 사항 및 건의 접수는요?</Card.Header>

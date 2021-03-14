@@ -1,26 +1,43 @@
 import { useEffect } from "react";
-import { Route, Link } from "react-router-dom";
-import "./App.css";
+import { Route } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import HometeTemplate from "./component/HometeTemplate";
 import Home from "./component/Home";
 import Profile from "./component/Profile";
-import { Container, Header, Message } from "semantic-ui-react";
+import { useRecoilState } from "recoil";
+import { UserProfile } from "./entities/UserProfile";
+import { userProfileState } from "./states/userProfileState";
 import { SemanticToastContainer } from "react-semantic-toasts";
+import "./App.scss";
 
-const App = () => {
+const App = (): JSX.Element => {
+  const [userProfile, setUserProfile] = useRecoilState(userProfileState);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .auth()
+      .onAuthStateChanged(async (firebaseUser) => {
+        if (firebaseUser) {
+          const db = firebase.firestore();
+          const doc = await db.collection("users").doc(firebaseUser.uid).get();
+          const data = doc.data() as UserProfile;
+          setUserProfile(data);
+        } else {
+          setUserProfile(null);
+        }
+      });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
-      <Container text style={{ margin: 20 }}>
-        <Header as="h1">
-          <Link to="/" style={{ color: "black" }}>
-            homete!
-          </Link>
-        </Header>
-        <Message info>
-          <p>베타 서비스 중입니다!</p>
-        </Message>
+      <HometeTemplate>
         <Route path="/" component={Home} exact />
         <Route path="/:username" component={Profile} exact />
-      </Container>
+      </HometeTemplate>
       <SemanticToastContainer position="top-right" />
     </>
   );

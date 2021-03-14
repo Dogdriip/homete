@@ -6,8 +6,8 @@ import "react-semantic-toasts/styles/react-semantic-alert.css";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { UserProfile } from "../../entities/UserProfile";
-import { userProfileState } from "../../state/userProfileState";
-import { hometesState } from "../../state/hometesState";
+import { userProfileState } from "../../states/userProfileState";
+import { hometesState } from "../../states/hometesState";
 
 const HometeCard = ({
   id,
@@ -17,9 +17,7 @@ const HometeCard = ({
   timestamp,
 }: Homete) => {
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
-  const [profile, setProfile] = useRecoilState<UserProfile | null>(
-    userProfileState
-  );
+  const [profile, setProfile] = useRecoilState(userProfileState);
 
   const timestampStr = timestamp.toDate().toLocaleString();
 
@@ -37,7 +35,7 @@ const HometeCard = ({
           animation: "fade left",
         });
         setHometes((state: Homete[]) =>
-          state.filter((homete: Homete) => homete.id !== id)
+          state.filter((homete: Homete) => homete.id !== id),
         );
       })
       .catch((error) => {
@@ -58,8 +56,8 @@ const HometeCard = ({
         const url = `homete.driip.me/${recipient}`;
         window.open(
           `https://twitter.com/intent/tweet?text=${encodeURI(
-            text
-          )}&url=${url}&hashtags=homete`
+            text,
+          )}&url=${url}&hashtags=homete`,
         );
         toast({
           title: "승인 완료!",
@@ -69,7 +67,7 @@ const HometeCard = ({
           animation: "fade left",
         });
         setHometes((state: Homete[]) =>
-          state.filter((homete: Homete) => homete.id !== id)
+          state.filter((homete: Homete) => homete.id !== id),
         );
       })
       .catch((error) => {
@@ -82,8 +80,8 @@ const HometeCard = ({
     const url = `homete.driip.me/${recipient}`;
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURI(
-        text
-      )}&url=${url}&hashtags=homete`
+        text,
+      )}&url=${url}&hashtags=homete`,
     );
   };
 
@@ -95,6 +93,7 @@ const HometeCard = ({
       <Card.Content extra>
         <Icon name="time" /> {timestampStr}{" "}
         {firebase.auth().currentUser &&
+          profile !== "PENDING" &&
           profile.uid === firebase.auth().currentUser.uid &&
           resolved && (
             <>

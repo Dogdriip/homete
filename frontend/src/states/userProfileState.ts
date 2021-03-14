@@ -1,9 +1,9 @@
 import { atom } from "recoil";
 import type { UserProfile } from "../entities/UserProfile";
 
-const userProfileState = atom<UserProfile | null>({
+const userProfileState = atom<UserProfile | "PENDING" | null>({
   key: "userProfileState",
-  default: null,
+  default: "PENDING",
 });
 
 export { userProfileState };

@@ -8,42 +8,41 @@ import { Homete } from "../entities/Homete";
 import ProfileCard from "./cards/ProfileCard";
 import SendHometeCard from "./cards/SendHometeCard";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { hometesState } from "../state/hometesState";
+import { hometesState } from "../states/hometesState";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { userProfileState } from "../state/userProfileState";
-import { unresolvedHometesState } from "../state/unresolvedHometesState";
-import { resolvedHometesState } from "../state/resolvedHometesState";
+import { userProfileState } from "../states/userProfileState";
+import { unresolvedHometesState } from "../states/unresolvedHometesState";
+import { resolvedHometesState } from "../states/resolvedHometesState";
+
+const getProfile = async (username: string): Promise<UserProfile | null> => {
+  const db = firebase.firestore();
+  const querySnapshot = await db
+    .collection("users")
+    .where("screen_name", "==", username)
+    .get();
+
+  if (querySnapshot.empty) {
+    return null;
+  } else {
+    const profile: UserProfile = querySnapshot.docs[0].data() as UserProfile;
+    return profile;
+  }
+};
 
 const Profile = ({ match }): JSX.Element => {
   const { username }: { username: string } = match.params;
 
-  const [profile, setProfile] = useRecoilState<UserProfile | null>(
-    userProfileState
-  );
+  const [userProfile, setUserProfile] = useRecoilState(userProfileState); // 로그인된 유저의 프로필
+  const [profile, setProfile] = useState<UserProfile>(null); // 현재 보고 있는 페이지의 유저 프로필
   const [hometes, setHometes] = useRecoilState<Homete[]>(hometesState);
   const unresolvedHometes = useRecoilValue<Homete[]>(unresolvedHometesState);
   const resolvedhometes = useRecoilValue<Homete[]>(resolvedHometesState);
   const [pending, setPending] = useState<boolean>(true);
   const [snapshot, setSnapshot] = useState<firebase.firestore.QuerySnapshot>(
-    null
+    null,
   );
   const [fetchingHometes, setFetchingHometes] = useState<boolean>(true);
-
-  const getUserProfile = async (
-    username: string
-  ): Promise<UserProfile | null> => {
-    const db = firebase.firestore();
-    const querySnapshot = await db
-      .collection("users")
-      .where("screen_name", "==", username)
-      .get();
-    let pf;
-    querySnapshot.forEach((doc) => {
-      pf = doc.data();
-    });
-    return pf;
-  };
 
   const fetchHometes = async (username: string) => {
     setFetchingHometes(true);
@@ -59,8 +58,8 @@ const Profile = ({ match }): JSX.Element => {
 
       setHometes(
         querySnapshot.docs.map(
-          (doc) => ({ id: doc.id, ...doc.data() } as Homete)
-        )
+          (doc) => ({ id: doc.id, ...doc.data() } as Homete),
+        ),
       );
       setSnapshot(querySnapshot);
     } else {
@@ -80,9 +79,9 @@ const Profile = ({ match }): JSX.Element => {
       setHometes((homete) =>
         homete.concat(
           querySnapshot.docs.map(
-            (doc) => ({ id: doc.id, ...doc.data() } as Homete)
-          )
-        )
+            (doc) => ({ id: doc.id, ...doc.data() } as Homete),
+          ),
+        ),
       );
       setSnapshot(querySnapshot);
     }
@@ -91,8 +90,8 @@ const Profile = ({ match }): JSX.Element => {
   };
 
   useEffect(() => {
-    // Get current page's user profile.
-    getUserProfile(username).then((data) => {
+    // 현재 페이지의 user profile 가져옴
+    getProfile(username).then((data) => {
       setProfile(data);
       setPending(false);
 
