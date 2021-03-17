@@ -84,7 +84,7 @@ const Home = (): JSX.Element => {
                   target="_blank"
                 >
                   @__Dogdriiiiip
-                </Label>
+                </Label>{" "}
                 에게 연락해 주세요!
               </List.Item>
               <List.Item>

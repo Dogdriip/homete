@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import type { UserProfile } from "../entities/UserProfile";
 import LoadingCard from "./cards/LoadingCard";
 import HometeCard from "./cards/HometeCard";
@@ -14,6 +14,10 @@ import "firebase/firestore";
 import { userProfileState } from "../states/userProfileState";
 import { unresolvedHometesState } from "../states/unresolvedHometesState";
 import { resolvedHometesState } from "../states/resolvedHometesState";
+
+interface MatchParams {
+  username: string;
+}
 
 const getProfile = async (username: string): Promise<UserProfile | null> => {
   const db = firebase.firestore();
@@ -30,8 +34,8 @@ const getProfile = async (username: string): Promise<UserProfile | null> => {
   }
 };
 
-const Profile = ({ match }): JSX.Element => {
-  const { username }: { username: string } = match.params;
+const Profile = ({ match }: RouteComponentProps<MatchParams>): JSX.Element => {
+  const { username } = match.params;
 
   const [userProfile, setUserProfile] = useRecoilState(userProfileState); // 로그인된 유저의 프로필
   const [profile, setProfile] = useState<UserProfile>(null); // 현재 보고 있는 페이지의 유저 프로필

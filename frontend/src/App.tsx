@@ -36,7 +36,7 @@ const App = (): JSX.Element => {
     <>
       <HometeTemplate>
         <Route path="/" component={Home} exact />
-        <Route path="/:username" component={Profile} exact />
+        <Route path="/:username" component={Profile} />
       </HometeTemplate>
       <SemanticToastContainer position="top-right" />
     </>
