@@ -3,17 +3,14 @@ import { LOGIN, loginAsync, LOGOUT, logoutAsync } from "./actions";
 import { toast } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import * as api from "../../lib/api";
 import { Auth } from "../../types/Auth";
 import { User } from "../../types/User";
 
-function* loginSaga(action) {
+function* loginSaga(action: ReturnType<typeof loginAsync.request>) {
   try {
     // 로그인 시도
-    const auth = firebase.auth();
-    const provider = new firebase.auth.TwitterAuthProvider();
-    const result = yield call([auth, auth.signInWithPopup], provider);
+    const result = yield call(api.loginWithTwitter);
 
     // 로그인 성공
     const credential: firebase.auth.OAuthCredential = result.credential;
@@ -32,7 +29,6 @@ function* loginSaga(action) {
     };
 
     // db에 프로필 정보 갱신
-    const db = firebase.firestore();
     const userVal: User = {
       uid: user.uid,
       name: profile["name"],
@@ -45,8 +41,7 @@ function* loginSaga(action) {
       ),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
-    const docRef = db.collection("users").doc(user.uid);
-    yield call([docRef, docRef.set], userVal);
+    yield call(api.setUserByUid, user.uid, userVal);
 
     // 로그인 완료
     toast({
@@ -70,11 +65,10 @@ function* loginSaga(action) {
   }
 }
 
-function* logoutSaga(action) {
+function* logoutSaga(action: ReturnType<typeof logoutAsync.request>) {
   try {
     // 로그아웃 시도
-    const auth = firebase.auth();
-    yield call([auth, auth.signOut]);
+    yield call(api.logout);
 
     // 로그아웃 완료
     toast({
