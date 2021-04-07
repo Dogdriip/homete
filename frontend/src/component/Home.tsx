@@ -1,42 +1,36 @@
-import { useState, useEffect } from "react";
-import { Card, List, Label } from "semantic-ui-react";
-import LoginWithTwitterButton from "./buttons/LoginWithTwitterButton";
-import LogoutButton from "./buttons/LogoutButton";
+import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../modules";
+import { Card, Label, List } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { UserProfile } from "../entities/UserProfile";
-import LoadingCard from "./cards/LoadingCard";
 import { TwitterTweetEmbed } from "react-twitter-embed";
-import { useRecoilState } from "recoil";
-import { userProfileState } from "../states/userProfileState";
+import LoginWithTwitterButton from "../button/LoginWithTwitterButton";
+import LogoutButton from "../button/LogoutButton";
 
-const Home = (): JSX.Element => {
-  const [userProfile, setUserProfile] = useRecoilState(userProfileState);
+const Home: React.FC = () => {
+  const auth = useSelector((state: RootState) => state.auth.auth);
 
   return (
     <Card.Group>
-      {userProfile === "PENDING" ? (
-        <LoadingCard />
-      ) : (
-        <Card fluid color="blue">
-          <Card.Content>
-            <Card.Header>트위터로 로그인</Card.Header>
-            <Card.Meta>
-              트위터로 로그인하면 자신의 페이지를 확인할 수 있어요!
-            </Card.Meta>
-            <Card.Description>
-              {!userProfile ? (
-                <LoginWithTwitterButton />
-              ) : (
-                <p>
-                  @{userProfile.screen_name}으로 로그인 완료!{" "}
-                  <Link to={"/" + userProfile.screen_name}>자신의 페이지</Link>
-                  를 확인해 보세요. <LogoutButton />
-                </p>
-              )}
-            </Card.Description>
-          </Card.Content>
-        </Card>
-      )}
+      <Card fluid color="blue">
+        <Card.Content>
+          <Card.Header>트위터로 로그인</Card.Header>
+          <Card.Meta>
+            트위터로 로그인하면 자신의 페이지를 확인할 수 있어요!
+          </Card.Meta>
+          <Card.Description>
+            {!auth ? (
+              <LoginWithTwitterButton />
+            ) : (
+              <p>
+                @{auth.screen_name}으로 로그인 완료!{" "}
+                <Link to={"/" + auth.screen_name}>자신의 페이지</Link>
+                를 확인해 보세요. <LogoutButton />
+              </p>
+            )}
+          </Card.Description>
+        </Card.Content>
+      </Card>
 
       <Card fluid>
         <Card.Content>

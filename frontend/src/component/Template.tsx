@@ -1,10 +1,10 @@
 import { Container, Header, Message } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import "./HometeTemplate.scss";
+import "./Template.scss";
 
-const HometeTemplate = ({ children }: { children: JSX.Element[] }) => {
+const Template = ({ children }: { children: JSX.Element[] }) => {
   return (
-    <Container text className="HometeTemplate">
+    <Container text className="Template">
       <Header as="h1">
         <Link to="/" className="header">
           homete!
@@ -20,4 +20,4 @@ const HometeTemplate = ({ children }: { children: JSX.Element[] }) => {
   );
 };
 
-export default HometeTemplate;
+export default Template;
