@@ -6,6 +6,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import { Auth } from "../../types/Auth";
+import { User } from "../../types/User";
 
 function* loginSaga(action) {
   try {
@@ -25,11 +26,27 @@ function* loginSaga(action) {
 
     const authVal: Auth = {
       uid: user.uid,
-      name: profile["name"],
       screen_name: profile["screen_name"],
       token,
       secret,
     };
+
+    // db에 프로필 정보 갱신
+    const db = firebase.firestore();
+    const userVal: User = {
+      uid: user.uid,
+      name: profile["name"],
+      screen_name: profile["screen_name"],
+      description: profile["description"],
+      profile_image_url: profile["profile_image_url"].replace("_normal", ""),
+      profile_image_url_https: profile["profile_image_url_https"].replace(
+        "_normal",
+        "",
+      ),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    const docRef = db.collection("users").doc(user.uid);
+    yield call([docRef, docRef.set], userVal);
 
     // 로그인 완료
     toast({

@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon } from "semantic-ui-react";
-import { RootState } from "../modules";
-import { loginAsync } from "../modules/auth";
+import { RootState } from "../../modules";
+import { loginAsync } from "../../modules/auth";
 
-const LoginWithTwitterButton = (): JSX.Element => {
+const LoginWithTwitterButton = () => {
   const loadingLogin = useSelector(
     (state: RootState) => state.auth.loading.LOGIN,
   );
