@@ -1,6 +1,6 @@
 import { Card, Placeholder } from "semantic-ui-react";
 
-const LoadingCard = () => {
+const LoadingCard: React.FC = () => {
   return (
     <Card fluid color="blue">
       <Card.Content>

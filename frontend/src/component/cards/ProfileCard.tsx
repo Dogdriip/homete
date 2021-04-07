@@ -11,7 +11,7 @@ const randomLabelArr = [
 const randomLabel =
   randomLabelArr[Math.floor(Math.random() * randomLabelArr.length)];
 
-const ProfileCard = (user: User) => {
+const ProfileCard: React.FC<User> = (user: User) => {
   const auth = useSelector((state: RootState) => state.auth.auth);
 
   return (

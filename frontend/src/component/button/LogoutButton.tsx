@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
 import { logoutAsync } from "../../modules/auth";
 
-const LogoutButton = (): JSX.Element => {
+const LogoutButton: React.FC = () => {
   const loadingLogout = useSelector(
     (state: RootState) => state.auth.loading.LOGOUT,
   );

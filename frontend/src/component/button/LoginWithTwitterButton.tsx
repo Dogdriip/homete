@@ -4,7 +4,7 @@ import { Button, Icon } from "semantic-ui-react";
 import { RootState } from "../../modules";
 import { loginAsync } from "../../modules/auth";
 
-const LoginWithTwitterButton = () => {
+const LoginWithTwitterButton: React.FC = () => {
   const loadingLogin = useSelector(
     (state: RootState) => state.auth.loading.LOGIN,
   );
