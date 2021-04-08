@@ -78,4 +78,4 @@ const SendHometeCard: React.FC<Props> = ({ recipient }: Props) => {
   );
 };
 
-export default SendHometeCard;
+export default React.memo(SendHometeCard);

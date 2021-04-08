@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, Placeholder } from "semantic-ui-react";
 
 const LoadingCard: React.FC = () => {
@@ -20,4 +21,4 @@ const LoadingCard: React.FC = () => {
   );
 };
 
-export default LoadingCard;
+export default React.memo(LoadingCard);

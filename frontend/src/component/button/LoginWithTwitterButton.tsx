@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon } from "semantic-ui-react";
 import { RootState } from "../../modules";
@@ -26,4 +26,4 @@ const LoginWithTwitterButton: React.FC = () => {
   );
 };
 
-export default LoginWithTwitterButton;
+export default React.memo(LoginWithTwitterButton);

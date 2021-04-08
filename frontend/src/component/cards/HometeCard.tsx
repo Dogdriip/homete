@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Icon, Popup } from "semantic-ui-react";
 import { RootState } from "../../modules";
@@ -87,4 +88,4 @@ const HometeCard = ({
   );
 };
 
-export default HometeCard;
+export default React.memo(HometeCard);

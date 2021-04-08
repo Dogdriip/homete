@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Image, Label, Popup } from "semantic-ui-react";
 import { RootState } from "../../modules";
@@ -13,7 +13,7 @@ const randomLabelArr = [
 const randomLabel =
   randomLabelArr[Math.floor(Math.random() * randomLabelArr.length)];
 
-const ProfileCard: React.FC<User> = (user: User) => {
+const ProfileCard: React.FC<User> = (user) => {
   const auth = useSelector((state: RootState) => state.auth.auth);
   const contributor = useSelector((state: RootState) => state.user.contributor);
   const dispatch = useDispatch();
@@ -65,4 +65,4 @@ const ProfileCard: React.FC<User> = (user: User) => {
   );
 };
 
-export default ProfileCard;
+export default React.memo(ProfileCard);
