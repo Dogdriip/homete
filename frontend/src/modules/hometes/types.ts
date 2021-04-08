@@ -8,6 +8,8 @@ export type HometesState = {
   loading: {
     FETCH: boolean;
     SEND: boolean;
+    APPROVE: boolean;
+    REJECT: boolean;
   };
   hometes: Homete[];
 };

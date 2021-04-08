@@ -1,6 +1,7 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Icon, Popup } from "semantic-ui-react";
 import { RootState } from "../../modules";
+import { approveAsync, rejectAsync } from "../../modules/hometes";
 import { Homete } from "../../types/Homete";
 
 const HometeCard = ({
@@ -12,12 +13,9 @@ const HometeCard = ({
 }: Homete) => {
   const auth = useSelector((state: RootState) => state.auth.auth);
   const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
 
   const timestampStr = timestamp.toDate().toLocaleString();
-
-  const onDelete = () => {};
-
-  const onResolve = () => {};
 
   const onTwitterShare = () => {
     const text = `칭찬받았어요! 😊 — ${description}`;
@@ -27,6 +25,15 @@ const HometeCard = ({
         text,
       )}&url=${url}&hashtags=homete`,
     );
+  };
+
+  const onReject = () => {
+    dispatch(rejectAsync.request(id));
+  };
+
+  const onApprove = () => {
+    dispatch(approveAsync.request(id));
+    onTwitterShare();
   };
 
   return (
@@ -39,6 +46,7 @@ const HometeCard = ({
         {auth && auth.uid === user.uid && resolved && (
           <>
             <br />
+            {/* eslint-disable-next-line */}
             <a onClick={() => onTwitterShare()}>
               <Icon name="twitter" />
             </a>
@@ -47,14 +55,16 @@ const HometeCard = ({
               on="click"
               pinned
               trigger={
+                // eslint-disable-next-line
                 <a>
                   <Icon name="info circle" />
                 </a>
               }
             />
+            {/* eslint-disable-next-line */}
             <a
               onClick={() =>
-                window.confirm("칭찬을 삭제하시겠어요?") && onDelete()
+                window.confirm("칭찬을 삭제하시겠어요?") && onReject()
               }
             >
               <Icon name="trash alternate" />
@@ -64,11 +74,11 @@ const HometeCard = ({
       </Card.Content>
       {!resolved && (
         <Button.Group>
-          <Button negative onClick={() => onDelete()}>
+          <Button negative onClick={onReject}>
             삭제
           </Button>
           <Button.Or />
-          <Button positive onClick={() => onResolve()}>
+          <Button positive onClick={onApprove}>
             승인
           </Button>
         </Button.Group>

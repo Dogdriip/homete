@@ -70,4 +70,16 @@ export const setHomete = async ({
   });
 };
 
+export const approveHomete = async (id: string): Promise<void> => {
+  const db = firebase.firestore();
+  await db.collection("hometes").doc(id).update({
+    resolved: true,
+  });
+};
+
+export const deleteHomete = async (id: string): Promise<void> => {
+  const db = firebase.firestore();
+  await db.collection("hometes").doc(id).delete();
+};
+
 export default {};
