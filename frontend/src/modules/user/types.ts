@@ -7,6 +7,8 @@ export type UserAction = ActionType<typeof actions>;
 export type UserState = {
   loading: {
     FETCH: boolean;
+    FETCH_CONTRIBUTOR: boolean;
   };
   user: User;
+  contributor: string;
 };

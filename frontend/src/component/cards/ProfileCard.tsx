@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Image, Label, Popup } from "semantic-ui-react";
 import { RootState } from "../../modules";
+import { fetchContributorAsync } from "../../modules/user";
 import { User } from "../../types/User";
 
 const randomLabelArr = [
@@ -13,16 +15,37 @@ const randomLabel =
 
 const ProfileCard: React.FC<User> = (user: User) => {
   const auth = useSelector((state: RootState) => state.auth.auth);
+  const contributor = useSelector((state: RootState) => state.user.contributor);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContributorAsync.request(user.screen_name));
+  }, [dispatch, user]);
 
   return (
     <Card fluid color="blue">
       <Card.Content>
-        <Image
-          floated="left"
-          size="tiny"
-          circular
-          src={user.profile_image_url_https}
-        />
+        {contributor ? (
+          <Popup
+            content={contributor}
+            trigger={
+              <Image
+                floated="left"
+                size="tiny"
+                circular
+                src={user.profile_image_url_https}
+                style={{ boxShadow: "rgb(255 215 0 / 80%) 0px 4px 10px 0px" }}
+              />
+            }
+          />
+        ) : (
+          <Image
+            floated="left"
+            size="tiny"
+            circular
+            src={user.profile_image_url_https}
+          />
+        )}
         <Card.Header as="h1" style={{ marginTop: 10, marginBottom: 10 }}>
           {user.name}
         </Card.Header>

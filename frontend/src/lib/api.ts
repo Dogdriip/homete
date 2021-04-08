@@ -70,6 +70,23 @@ export const setHomete = async ({
   });
 };
 
+export const getContributorByScreenName = async (
+  screenName: string,
+): Promise<string> => {
+  const db = firebase.firestore();
+  const querySnapshot = await db
+    .collection("contributors")
+    .where("screen_name", "==", screenName)
+    .get();
+
+  if (querySnapshot.empty) {
+    return null;
+  } else {
+    const description = querySnapshot.docs[0].data().description;
+    return description;
+  }
+};
+
 export const approveHomete = async (id: string): Promise<void> => {
   const db = firebase.firestore();
   await db.collection("hometes").doc(id).update({
