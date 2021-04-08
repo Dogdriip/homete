@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { all } from "redux-saga/effects";
 import auth, { authSaga } from "./auth";
 import user, { userSaga } from "./user";
+import hometes, { hometesSaga } from "./hometes";
 
 const persistConfig = {
   key: "root",
@@ -14,10 +15,11 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth,
   user,
+  hometes,
 });
 
 export function* rootSaga() {
-  yield all([authSaga(), userSaga()]);
+  yield all([authSaga(), userSaga(), hometesSaga()]);
 }
 
 export type RootState = ReturnType<typeof rootReducer>;
