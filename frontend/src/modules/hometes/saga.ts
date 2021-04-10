@@ -50,7 +50,7 @@ function* approveSaga(
 ): Generator {
   try {
     // homete 승인 시도
-    // TODO
+    yield call(api.approveHomete, action.payload);
     // homete 승인 성공
     toast({
       title: "승인 완료!",
