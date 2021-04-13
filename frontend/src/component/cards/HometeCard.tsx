@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Icon, Popup } from "semantic-ui-react";
 import { RootState } from "src/modules";
 import { approveAsync, rejectAsync } from "src/modules/hometes";
+import { DeepReadonly } from "src/types/DeepReadonly";
 import { Homete } from "src/types/Homete";
+
+type HometeCardProps = DeepReadonly<Homete>;
 
 const HometeCard = ({
   id,
@@ -11,7 +14,7 @@ const HometeCard = ({
   description,
   resolved,
   timestamp,
-}: Homete) => {
+}: HometeCardProps) => {
   const auth = useSelector((state: RootState) => state.auth.auth);
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();

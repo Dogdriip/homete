@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Image, Label, Popup } from "semantic-ui-react";
 import { RootState } from "src/modules";
 import { fetchContributorAsync } from "src/modules/user";
+import { DeepReadonly } from "src/types/DeepReadonly";
 import { User } from "src/types/User";
 
 const randomLabelArr = [
@@ -13,7 +14,9 @@ const randomLabelArr = [
 const randomLabel =
   randomLabelArr[Math.floor(Math.random() * randomLabelArr.length)];
 
-const ProfileCard: React.FC<User> = (user) => {
+type ProfileCardProps = DeepReadonly<User>;
+
+const ProfileCard: React.FC<ProfileCardProps> = (user) => {
   const auth = useSelector((state: RootState) => state.auth.auth);
   const contributor = useSelector((state: RootState) => state.user.contributor);
   const dispatch = useDispatch();

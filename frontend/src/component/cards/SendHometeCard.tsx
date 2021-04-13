@@ -4,12 +4,15 @@ import { toast } from "react-semantic-toasts";
 import { Button, Card, Input, Progress } from "semantic-ui-react";
 import { RootState } from "src/modules";
 import { sendAsync as sendHometeAsync } from "src/modules/hometes";
+import { DeepReadonlyObject } from "src/types/DeepReadonly";
 
-type Props = {
+type SendHometeCardProps = DeepReadonlyObject<{
   recipient: string;
-};
+}>;
 
-const SendHometeCard: React.FC<Props> = ({ recipient }: Props) => {
+const SendHometeCard: React.FC<SendHometeCardProps> = ({
+  recipient,
+}: SendHometeCardProps) => {
   const loading = useSelector((state: RootState) => state.hometes.loading.SEND);
   const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
