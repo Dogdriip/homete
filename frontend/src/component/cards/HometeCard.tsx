@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Icon, Popup } from "semantic-ui-react";
-import { RootState } from "../../modules";
-import { approveAsync, rejectAsync } from "../../modules/hometes";
-import { Homete } from "../../types/Homete";
+import { RootState } from "src/modules";
+import { approveAsync, rejectAsync } from "src/modules/hometes";
+import { Homete } from "src/types/Homete";
 
 const HometeCard = ({
   id,

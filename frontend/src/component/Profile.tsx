@@ -2,13 +2,13 @@ import { useEffect, useMemo } from "react";
 import { Card } from "semantic-ui-react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAsync as userFetchAsync } from "../modules/user";
-import { fetchAsync as hometesFetchAsync } from "../modules/hometes";
-import { RootState } from "../modules";
-import LoadingCard from "./cards/LoadingCard";
-import ProfileCard from "./cards/ProfileCard";
-import SendHometeCard from "./cards/SendHometeCard";
-import HometeCard from "./cards/HometeCard";
+import { fetchAsync as userFetchAsync } from "src/modules/user";
+import { fetchAsync as hometesFetchAsync } from "src/modules/hometes";
+import { RootState } from "src/modules";
+import LoadingCard from "src/component/cards/LoadingCard";
+import ProfileCard from "src/component/cards/ProfileCard";
+import SendHometeCard from "src/component/cards/SendHometeCard";
+import HometeCard from "src/component/cards/HometeCard";
 
 const Profile: React.FC = () => {
   const { username }: { username: string } = useParams();

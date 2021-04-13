@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../modules";
+import { RootState } from "src/modules";
 import { Card, Label, List } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { TwitterTweetEmbed } from "react-twitter-embed";
-import LoginWithTwitterButton from "./button/LoginWithTwitterButton";
-import LogoutButton from "./button/LogoutButton";
+import LoginWithTwitterButton from "src/component/button/LoginWithTwitterButton";
+import LogoutButton from "src/component/button/LogoutButton";
 
 const Home: React.FC = () => {
   const auth = useSelector((state: RootState) => state.auth.auth);

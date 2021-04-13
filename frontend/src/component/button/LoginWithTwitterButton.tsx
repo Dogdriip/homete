@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon } from "semantic-ui-react";
-import { RootState } from "../../modules";
-import { loginAsync } from "../../modules/auth";
+import { RootState } from "src/modules";
+import { loginAsync } from "src/modules/auth";
 
 const LoginWithTwitterButton: React.FC = () => {
   const loadingLogin = useSelector(

@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
-import Template from "./component/Template";
-import Home from "./component/Home";
-import Profile from "./component/Profile";
+import Template from "src/component/Template";
+import Home from "src/component/Home";
+import Profile from "src/component/Profile";
 import { SemanticToastContainer } from "react-semantic-toasts";
 import "./App.scss";
 

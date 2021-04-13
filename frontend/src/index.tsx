@@ -11,10 +11,10 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import "./index.css";
 import "semantic-ui-css/semantic.min.css";
-import App from "./App";
+import App from "src/App";
 import firebase from "firebase/app";
 import "firebase/auth";
-import firebaseConfig from "./config/firebaseConfig";
+import firebaseConfig from "src/config/firebaseConfig";
 
 firebase.initializeApp(firebaseConfig);
 

@@ -2,8 +2,8 @@ import React, { KeyboardEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-semantic-toasts";
 import { Button, Card, Input, Progress } from "semantic-ui-react";
-import { RootState } from "../../modules";
-import { sendAsync as sendHometeAsync } from "../../modules/hometes";
+import { RootState } from "src/modules";
+import { sendAsync as sendHometeAsync } from "src/modules/hometes";
 
 type Props = {
   recipient: string;

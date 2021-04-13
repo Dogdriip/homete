@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Image, Label, Popup } from "semantic-ui-react";
-import { RootState } from "../../modules";
-import { fetchContributorAsync } from "../../modules/user";
-import { User } from "../../types/User";
+import { RootState } from "src/modules";
+import { fetchContributorAsync } from "src/modules/user";
+import { User } from "src/types/User";
 
 const randomLabelArr = [
   <Label color="orange">귀여운 아타시!</Label>,

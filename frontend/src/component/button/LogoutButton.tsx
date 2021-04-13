@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../modules";
-import { logoutAsync } from "../../modules/auth";
+import { RootState } from "src/modules";
+import { logoutAsync } from "src/modules/auth";
 
 const LogoutButton: React.FC = () => {
   const loadingLogout = useSelector(
