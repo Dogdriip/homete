@@ -1,4 +1,5 @@
 import { createReducer } from "typesafe-actions";
+import { produce } from "immer";
 import { HometesState, HometesAction } from "./types";
 import {
   FETCH,
@@ -26,59 +27,63 @@ const initialState: HometesState = {
 };
 
 const reducer = createReducer<HometesState, HometesAction>(initialState, {
-  [FETCH]: (state) => ({
-    ...state,
-    loading: { ...state.loading, FETCH: true },
-  }),
-  [FETCH_SUCCESS]: (state, action) => ({
-    ...state,
-    loading: { ...state.loading, FETCH: false },
-    hometes: action.payload,
-  }),
-  [FETCH_FAILURE]: (state) => ({
-    ...state,
-    loading: { ...state.loading, FETCH: false },
-  }),
-  [SEND]: (state) => ({
-    ...state,
-    loading: { ...state.loading, SEND: true },
-  }),
-  [SEND_SUCCESS]: (state) => ({
-    ...state,
-    loading: { ...state.loading, SEND: false },
-  }),
-  [SEND_FAILURE]: (state) => ({
-    ...state,
-    loading: { ...state.loading, SEND: false },
-  }),
-  [APPROVE]: (state) => ({
-    ...state,
-    loading: { ...state.loading, APPROVE: true },
-  }),
-  [APPROVE_SUCCESS]: (state, action) => ({
-    ...state,
-    loading: { ...state.loading, APPROVE: false },
-    hometes: state.hometes.map((homete) =>
-      homete.id === action.payload ? { ...homete, resolved: true } : homete,
-    ),
-  }),
-  [APPROVE_FAILURE]: (state) => ({
-    ...state,
-    loading: { ...state.loading, APPROVE: false },
-  }),
-  [REJECT]: (state) => ({
-    ...state,
-    loading: { ...state.loading, REJECT: true },
-  }),
-  [REJECT_SUCCESS]: (state, action) => ({
-    ...state,
-    loading: { ...state.loading, REJECT: false },
-    hometes: state.hometes.filter((homete) => homete.id !== action.payload),
-  }),
-  [REJECT_FAILURE]: (state) => ({
-    ...state,
-    loading: { ...state.loading, REJECT: false },
-  }),
+  [FETCH]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.FETCH = true;
+    }),
+  [FETCH_SUCCESS]: (state, action) =>
+    produce(state, (draft) => {
+      draft.loading.FETCH = false;
+      draft.hometes = action.payload;
+    }),
+  [FETCH_FAILURE]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.FETCH = false;
+    }),
+  [SEND]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.SEND = true;
+    }),
+  [SEND_SUCCESS]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.SEND = false;
+    }),
+  [SEND_FAILURE]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.SEND = false;
+    }),
+  [APPROVE]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.APPROVE = true;
+    }),
+  [APPROVE_SUCCESS]: (state, action) =>
+    produce(state, (draft) => {
+      draft.loading.APPROVE = false;
+      const homete = draft.hometes.find(
+        (homete) => homete.id === action.payload,
+      );
+      homete.resolved = true;
+    }),
+  [APPROVE_FAILURE]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.APPROVE = false;
+    }),
+  [REJECT]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.REJECT = true;
+    }),
+  [REJECT_SUCCESS]: (state, action) =>
+    produce(state, (draft) => {
+      draft.loading.REJECT = false;
+      const idx = draft.hometes.findIndex(
+        (homete) => homete.id === action.payload,
+      );
+      draft.hometes.splice(idx, 1);
+    }),
+  [REJECT_FAILURE]: (state) =>
+    produce(state, (draft) => {
+      draft.loading.REJECT = false;
+    }),
 });
 
 export default reducer;
