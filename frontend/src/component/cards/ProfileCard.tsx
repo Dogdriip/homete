@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Image, Label, Popup } from "semantic-ui-react";
+import { Card, Image, Label, Popup } from "semantic-ui-react";
 import { RootState } from "src/modules";
 import { fetchContributorAsync } from "src/modules/user";
 import { DeepReadonly } from "src/types/DeepReadonly";

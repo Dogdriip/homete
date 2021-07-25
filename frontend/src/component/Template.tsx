@@ -5,6 +5,7 @@ import "./Template.scss";
 const Template: React.FC = ({ children }) => {
   return (
     <Container text className="Template">
+      <div></div>
       <Header as="h1">
         <Link to="/" className="header">
           homete!
