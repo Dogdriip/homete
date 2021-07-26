@@ -4,7 +4,7 @@ import Layout from "./components/layout";
 import Header from "./components/header";
 import Card from "./components/card";
 
-const Home: React.ReactNode = () => {
+const IndexPage = () => {
   return (
     <Layout>
       <Head>
@@ -69,4 +69,4 @@ const Home: React.ReactNode = () => {
   );
 };
 
-export default Home;
+export default Indexe;

@@ -1,11 +1,7 @@
 import React from "react";
-import styles from "../../styles/layout.module.css";
+import styles from "../../styles/layout.module.scss";
 
-const Layout: React.ReactNode = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const Layout = ({ children }) => {
   return <div className={styles.container}>{children}</div>;
 };
 

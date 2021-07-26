@@ -1,6 +1,6 @@
 import styles from "../../styles/header.module.scss";
 
-const Header: React.ReactNode = () => {
+const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
