@@ -1,8 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import Layout from "./components/layout";
-import Header from "./components/header";
-import Card from "./components/card";
+import { Layout } from "./components/layout";
+import { Header } from "./components/header";
+import { NormalCard } from "./components/card";
 
 const IndexPage = () => {
   return (
@@ -15,7 +15,7 @@ const IndexPage = () => {
         <Header />
       </header>
       <main>
-        <Card>
+        <NormalCard>
           <h2>어떤 서비스인가요?</h2>
           <blockquote className="twitter-tweet">
             <p lang="ko" dir="ltr">
@@ -37,8 +37,8 @@ const IndexPage = () => {
               승인한 칭찬은 프로필에 나타나고, 트위터에 게시할 수도 있어요.
             </li>
           </ul>
-        </Card>
-        <Card>
+        </NormalCard>
+        <NormalCard>
           <h2>어떻게 사용하나요?</h2>
           <ul>
             <li>
@@ -50,8 +50,8 @@ const IndexPage = () => {
               있어요.
             </li>
           </ul>
-        </Card>
-        <Card>
+        </NormalCard>
+        <NormalCard>
           <h2>불편 사항 및 건의 접수는요?</h2>
           <ul>
             <li>
@@ -63,10 +63,10 @@ const IndexPage = () => {
               연락은 환영입니다!
             </li>
           </ul>
-        </Card>
+        </NormalCard>
       </main>
     </Layout>
   );
 };
 
-export default Indexe;
+export default IndexPage;

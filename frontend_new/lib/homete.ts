@@ -4,22 +4,26 @@ import {
   collection,
   query,
   where,
+  orderBy,
   getDocs,
 } from "firebase/firestore";
 import firebaseConfig from "../config/firebaseConfig";
-import type { User } from "../types/user";
+import { Homete } from "../types/homete";
 
-export const getUserByScreenName = async (screenName: string) => {
+export const getHometesByScreenName = async (screenName: string) => {
   if (!getApps().length) {
     initializeApp(firebaseConfig);
   }
   const db = getFirestore();
   const q = query(
-    collection(db, "users"),
-    where("screen_name", "==", screenName)
+    collection(db, "hometes"),
+    orderBy("timestamp", "desc"),
+    where("recipient", "==", screenName)
   );
   const querySnapshot = await getDocs(q);
 
-  const user = querySnapshot.docs[0].data() as User;
-  return user;
+  const hometes: Homete[] = querySnapshot.docs.map(
+    (doc) => ({ id: doc.id, ...doc.data() } as Homete)
+  );
+  return hometes;
 };

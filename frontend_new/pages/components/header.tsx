@@ -1,6 +1,6 @@
 import styles from "../../styles/header.module.scss";
 
-const Header = () => {
+export const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
@@ -12,5 +12,3 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;

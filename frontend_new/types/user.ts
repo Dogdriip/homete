@@ -1,4 +1,4 @@
-import { FieldValue } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 type User = {
   uid: string;
@@ -7,7 +7,7 @@ type User = {
   description: string;
   profile_image_url: string;
   profile_image_url_https: string;
-  timestamp: FieldValue;
+  timestamp: Timestamp;
 };
 
 export type { User };

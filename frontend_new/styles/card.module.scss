@@ -3,8 +3,27 @@
   box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
   padding: 1rem 2rem;
   margin: 1rem;
+  transition: box-shadow 0.2s cubic-bezier(0, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0, 0, 0.2, 1);
 
   ul {
     padding-inline-start: 2rem;
   }
+}
+.card:hover {
+  box-shadow: 0 2px 15px 3px rgb(0 0 0 / 24%);
+  transform: scale(1.02);
+}
+
+.normal_card {
+}
+
+.temporary_card {
+  background: repeating-linear-gradient(
+    45deg,
+    rgb(245, 245, 245) 0,
+    rgb(245, 245, 245) 10px,
+    white 10px,
+    white 20px
+  );
 }
