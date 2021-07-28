@@ -6,6 +6,14 @@ export const NormalCard: React.FC = ({ children }) => {
   return <div className={cn(styles.card, styles.normal_card)}>{children}</div>;
 };
 
+export const NormalCenteredCard: React.FC = ({ children }) => {
+  return (
+    <div className={cn(styles.card, styles.normal_card, styles.centered)}>
+      {children}
+    </div>
+  );
+};
+
 export const NormalHometeCard: React.FC<
   Partial<React.DOMAttributes<HTMLDivElement>>
 > = ({ children, onClick }) => {

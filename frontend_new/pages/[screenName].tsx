@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import { Layout } from "./components/layout";
 import { Header } from "./components/header";
 import {
   NormalCard,
+  NormalCenteredCard,
   NormalHometeCard,
   TemporaryHometeCard,
 } from "./components/card";
@@ -18,30 +19,38 @@ import { Homete } from "../types/homete";
 
 const UserPage = ({
   user,
-  hometes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+  const [hometes, setHometes] = useState<Homete[] | null>(null);
+  const [resolvedHometes, setResolvedHometes] = useState<Homete[]>([]);
+  const [unresolvedHometes, setUnresolvedHometes] = useState<Homete[]>([]);
 
-  const resolvedHometes: Homete[] = hometes.filter(
-    (homete: Homete) => homete.resolved
-  );
-  const unresolvedHometes: Homete[] = hometes.filter(
-    (homete: Homete) => !homete.resolved
-  );
+  useEffect(() => {
+    const fetchHometes = async () => {
+      const hometes: Homete[] = await getHometesByScreenName(user.screen_name);
+      setHometes(hometes);
+      setResolvedHometes(hometes.filter((homete: Homete) => homete.resolved));
+      setUnresolvedHometes(
+        hometes.filter((homete: Homete) => !homete.resolved)
+      );
+    };
+    fetchHometes();
+  }, [user]);
 
-  return (
-    <Layout>
-      <Head>
-        <title>homete! - @{user.screen_name}</title>
-      </Head>
-
-      <header>
-        <Header />
-      </header>
-      <main>
-        <NormalCard key="profile_card">
-          <ProfileContent user={user} />
-        </NormalCard>
+  const loadingCard = useMemo(() => {
+    return (
+      <NormalCenteredCard>
+        <p>로딩중...</p>
+      </NormalCenteredCard>
+    );
+  }, []);
+  const hometesOrEmptyHometeMessage = useMemo(() => {
+    return hometes === null ? (
+      <NormalCenteredCard>
+        <p>아직 받은 칭찬이 없어요...</p>
+      </NormalCenteredCard>
+    ) : (
+      <>
         {unresolvedHometes.map((unresolvedHomete: Homete) => (
           <TemporaryHometeCard key={unresolvedHomete.id}>
             <HometeContent homete={unresolvedHomete} />
@@ -57,6 +66,24 @@ const UserPage = ({
             <HometeContent homete={resolvedHomete} />
           </NormalHometeCard>
         ))}
+      </>
+    );
+  }, [hometes, resolvedHometes, router, unresolvedHometes, user.screen_name]);
+
+  return (
+    <Layout>
+      <Head>
+        <title>homete! - @{user.screen_name}</title>
+      </Head>
+
+      <header>
+        <Header />
+      </header>
+      <main>
+        <NormalCard key="profile_card">
+          <ProfileContent user={user} />
+        </NormalCard>
+        {hometes === null ? loadingCard : hometesOrEmptyHometeMessage}
       </main>
     </Layout>
   );
@@ -64,17 +91,14 @@ const UserPage = ({
 
 export const getServerSideProps: GetServerSideProps<{
   user: User;
-  hometes: Homete[];
 }> = async (context) => {
   const screenName = context.params?.screenName as string;
 
   const user: User = await getUserByScreenName(screenName);
-  const hometes: Homete[] = await getHometesByScreenName(screenName);
 
   return {
     props: {
       user: JSON.parse(JSON.stringify(user)),
-      hometes: JSON.parse(JSON.stringify(hometes)),
     },
   };
 };
