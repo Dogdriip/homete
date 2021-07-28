@@ -1,5 +1,3 @@
-import { Timestamp } from "firebase/firestore";
-
 type User = {
   uid: string;
   name: string;
@@ -7,7 +5,10 @@ type User = {
   description: string;
   profile_image_url: string;
   profile_image_url_https: string;
-  timestamp: Timestamp;
+  timestamp: {
+    seconds: number;
+    nanoseconds: number;
+  };
 };
 
 export type { User };

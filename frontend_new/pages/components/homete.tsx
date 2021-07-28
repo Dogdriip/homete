@@ -4,7 +4,7 @@ import { Homete } from "../../types/homete";
 
 export const HometeContent = ({ homete }: { homete: Homete }) => {
   const timestampStr = new Date(
-    homete.timestamp.seconds * 1_000 + homete.timestamp.nanoseconds
+    homete.timestamp.seconds * 1_000
   ).toLocaleString("ko-KR");
 
   return (
@@ -15,6 +15,12 @@ export const HometeContent = ({ homete }: { homete: Homete }) => {
     >
       <p>{homete.description}</p>
       <p className={styles.homete_timestamp}>{timestampStr}</p>
+      {!homete.resolved && (
+        <div className={styles.button_area}>
+          <button className={cn(styles.negative, styles.button)}>삭제</button>
+          <button className={cn(styles.positive, styles.button)}>승인</button>
+        </div>
+      )}
     </div>
   );
 };

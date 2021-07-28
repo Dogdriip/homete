@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { Layout } from "./components/layout";
 import { Header } from "./components/header";
-import { NormalCard, TemporaryCard } from "./components/card";
+import {
+  NormalCard,
+  NormalHometeCard,
+  TemporaryHometeCard,
+} from "./components/card";
 import { ProfileContent } from "./components/profile";
 import { HometeContent } from "./components/homete";
 import { getUserByScreenName } from "../lib/user";
@@ -15,7 +20,7 @@ const UserPage = ({
   user,
   hometes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  useEffect(() => {}, []);
+  const router = useRouter();
 
   const resolvedHometes: Homete[] = hometes.filter(
     (homete: Homete) => homete.resolved
@@ -38,14 +43,19 @@ const UserPage = ({
           <ProfileContent user={user} />
         </NormalCard>
         {unresolvedHometes.map((unresolvedHomete: Homete) => (
-          <TemporaryCard key={unresolvedHomete.id}>
+          <TemporaryHometeCard key={unresolvedHomete.id}>
             <HometeContent homete={unresolvedHomete} />
-          </TemporaryCard>
+          </TemporaryHometeCard>
         ))}
         {resolvedHometes.map((resolvedHomete: Homete) => (
-          <NormalCard key={resolvedHomete.id}>
+          <NormalHometeCard
+            key={resolvedHomete.id}
+            onClick={() =>
+              router.push(`/${user.screen_name}/${resolvedHomete.id}`)
+            }
+          >
             <HometeContent homete={resolvedHomete} />
-          </NormalCard>
+          </NormalHometeCard>
         ))}
       </main>
     </Layout>

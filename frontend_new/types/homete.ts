@@ -1,11 +1,12 @@
-import { Timestamp } from "firebase/firestore";
-
 type Homete = {
   id: string;
   recipient: string;
   description: string;
   resolved: boolean;
-  timestamp: Timestamp;
+  timestamp: {
+    seconds: number;
+    nanoseconds: number;
+  };
 };
 
 export type { Homete };

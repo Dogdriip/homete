@@ -8,6 +8,10 @@
 
   .login_status {
     .login_with_twitter {
+      cursor: pointer;
+    }
+    .logout {
+      cursor: pointer;
     }
   }
 }

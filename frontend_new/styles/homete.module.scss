@@ -3,4 +3,31 @@
     text-align: right;
     color: gray;
   }
+
+  .button_area {
+    display: flex;
+    justify-content: center;
+
+    .button {
+      width: 50%;
+      height: 2.5rem;
+      box-shadow: inset 0 0 0 1px transparent, inset 0 0 0 0 rgb(34 36 38 / 15%);
+      border: none;
+      font-size: 1.1rem;
+      margin: 0 1rem;
+      border-radius: 7px;
+    }
+    .negative {
+      background-color: #db2828;
+      color: #fff;
+      text-shadow: none;
+      background-image: none;
+    }
+    .positive {
+      background-color: #21ba45;
+      color: #fff;
+      text-shadow: none;
+      background-image: none;
+    }
+  }
 }

@@ -5,6 +5,8 @@ import {
   query,
   where,
   getDocs,
+  setDoc,
+  doc,
 } from "firebase/firestore";
 import firebaseConfig from "../config/firebaseConfig";
 import type { User } from "../types/user";
@@ -22,4 +24,9 @@ export const getUserByScreenName = async (screenName: string) => {
 
   const user = querySnapshot.docs[0].data() as User;
   return user;
+};
+
+export const setUserByUid = async (uid: string, user: User) => {
+  const db = getFirestore();
+  await setDoc(doc(db, "users", uid), user);
 };

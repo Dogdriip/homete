@@ -1,4 +1,31 @@
-html,
-body {
-  font-family: "Noto Sans KR", sans-serif;
+@font-face {
+  font-family: "CookieRunRegular";
+  src: url("/fonts/CookieRunFont/CookieRun-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "CookieRunBold";
+  src: url("/fonts/CookieRunFont/CookieRun-Bold.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "CookieRunBlack";
+  src: url("/fonts/CookieRunFont/CookieRun-Black.ttf");
+  font-weight: 900;
+}
+
+* {
+  font-family: "CookieRunRegular", sans-serif;
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+li,
+p,
+a {
+  font-size: 1.2rem;
 }
