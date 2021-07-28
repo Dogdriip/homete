@@ -30,11 +30,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Define texts.
   const nicknameIsHometed = `@${homete.recipient}님은 칭찬받았어요!`;
+  const hometeDescriptionNewLine = homete.description.replace(
+    /(.{30})/g,
+    "$1\n"
+  );
   const hometeUrl = `https://homete.driip.me`;
-  const hometeDescription = homete.description;
 
   // Draw texts.
-  context.font = "1rem 'CookieRun Regular' sans-serif";
+  context.font = "1.5rem 'CookieRun Regular' sans-serif";
   context.textAlign = "center";
   context.textBaseline = "top";
   context.fillStyle = "#000000";
@@ -44,7 +47,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   context.textAlign = "center";
   context.textBaseline = "top";
   context.fillStyle = "#000000";
-  context.fillText(homete.description, 600, 200);
+  context.fillText(hometeDescriptionNewLine, 600, 200);
+
+  context.font = "1rem 'CookieRun Regular' sans-serif";
+  context.textAlign = "center";
+  context.textBaseline = "top";
+  context.fillStyle = "#000000";
+  context.fillText(hometeUrl, 600, 500);
 
   const buffer = canvas.toBuffer("image/jpeg");
 
