@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "../../styles/profile.module.scss";
+import styles from "../styles/profile.module.scss";
 import { User } from "../types/user";
 
 export const ProfileContent = ({ user }: { user: User }) => {

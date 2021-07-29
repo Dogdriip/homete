@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import cn from "classnames";
-import styles from "../../styles/homete.module.scss";
+import styles from "../styles/homete.module.scss";
 import { Homete } from "../types/homete";
 import { approveHometeById, deleteHometeById } from "../lib/homete";
 import useFirebaseTwitterAuth from "../hooks/useFirebaseTwitterAuth";
