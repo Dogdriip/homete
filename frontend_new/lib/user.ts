@@ -1,4 +1,5 @@
 import { getApps, initializeApp } from "firebase/app";
+import { UserCredential, getAdditionalUserInfo } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -26,7 +27,32 @@ export const getUserByScreenName = async (screenName: string) => {
   return user;
 };
 
-export const setUserByUid = async (uid: string, user: User) => {
+export const setUserByUserCredential = async (
+  userCredential: UserCredential
+) => {
+  if (!getApps().length) {
+    initializeApp(firebaseConfig);
+  }
   const db = getFirestore();
-  await setDoc(doc(db, "users", uid), user);
+
+  const additionalUserInfo = getAdditionalUserInfo(userCredential);
+  const profile = additionalUserInfo!.profile;
+  const user = {
+    uid: userCredential.user.uid,
+    name: profile?.name,
+    screen_name: profile?.screen_name,
+    description: profile?.description,
+    profile_image_url: String(profile?.profile_image_url).replace(
+      "_normal",
+      ""
+    ),
+    profile_image_url_https: String(profile?.profile_image_url_https).replace(
+      "_normal",
+      ""
+    ),
+    // timestamp: serverTimestamp(),
+  } as User;
+
+  await setDoc(doc(db, "users", userCredential.user.uid), user);
+  return user;
 };

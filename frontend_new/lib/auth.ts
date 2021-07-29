@@ -9,7 +9,8 @@ export const loginWithTwitter = async () => {
   const auth = getAuth();
   const provider = new TwitterAuthProvider();
   try {
-    await signInWithPopup(auth, provider);
+    const userCredential = await signInWithPopup(auth, provider);
+    return userCredential;
   } catch (e) {
     console.error(e);
   }

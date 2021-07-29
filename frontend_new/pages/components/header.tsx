@@ -26,11 +26,11 @@ export const Header = () => {
   const loggedIn: ReactNode = useMemo(() => {
     return (
       <div className={styles.dropdown}>
-        <span>{user?.displayName}</span>
+        <span>{`@${user?.screen_name}`}</span>
         <div className={styles.dropdown_content}>
           <div
             className={styles.dropdown_item}
-            onClick={() => router.push(`/${false}`)}
+            onClick={() => router.push(`/${user?.screen_name}`)}
           >
             <a>내 페이지</a>
           </div>
@@ -40,7 +40,7 @@ export const Header = () => {
         </div>
       </div>
     );
-  }, [user]);
+  }, [handleLogoutClick, router, user]);
   const notLoggedIn: ReactNode = useMemo(() => {
     return (
       <a className={styles.login_with_twitter} onClick={handleLoginClick}>
