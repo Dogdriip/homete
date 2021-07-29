@@ -1,4 +1,4 @@
-module.exports = withFonts({
+module.exports = {
   reactStrictMode: true,
   images: {
     domains: ["pbs.twimg.com"],
@@ -6,4 +6,4 @@ module.exports = withFonts({
   serverRuntimeConfig: {
     PROJECT_ROOT: __dirname,
   },
-});
+};
