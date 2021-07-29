@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/hometeImage/[id].ts": {
+    "api/hometeImage/**/*.ts": {
       "includeFiles": "/public/**"
     }
   }
