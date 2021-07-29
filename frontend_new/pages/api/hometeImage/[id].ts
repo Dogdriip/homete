@@ -17,10 +17,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const context = canvas.getContext("2d");
 
   // Register font.
-  registerFont("public/fonts/CookieRunFont/CookieRun-Regular.ttf", {
+  registerFont("../../fonts/CookieRunFont/CookieRun-Regular.ttf", {
     family: "CookieRun Regular",
   });
-  registerFont("public/fonts/CookieRunFont/CookieRun-Bold.ttf", {
+  registerFont("../../fonts/CookieRunFont/CookieRun-Bold.ttf", {
     family: "CookieRun Bold",
   });
 
