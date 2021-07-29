@@ -3,7 +3,7 @@ import { createCanvas, registerFont } from "canvas";
 import { getHometeById } from "../../../lib/homete";
 import { Homete } from "../../../types/homete";
 import path from "path";
-import getConfig from "next/config";
+import { promises as fs } from "fs";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -19,22 +19,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const context = canvas.getContext("2d");
 
   // Register font.
-  const { serverRuntimeConfig } = getConfig();
-  registerFont(
-    path.join(
-      serverRuntimeConfig.PROJECT_ROOT,
-      "./fonts/CookieRun-Regular.ttf"
-    ),
-    {
-      family: "CookieRun Regular",
-    }
-  );
-  registerFont(
-    path.join(serverRuntimeConfig.PROJECT_ROOT, "./fonts/CookieRun-Bold.ttf"),
-    {
-      family: "CookieRun Bold",
-    }
-  );
+  let basePath = process.cwd();
+  if (process.env.NODE_ENV === "production") {
+    basePath = path.join(process.cwd(), ".next/server/chunks");
+  }
+  registerFont(path.join(basePath, "fonts/CookieRun-Regular.ttf"), {
+    family: "CookieRun Regular",
+  });
+  registerFont(path.join(basePath, "fonts/CookieRun-Bold.ttf"), {
+    family: "CookieRun Bold",
+  });
 
   // Fill whole background with white.
   context.fillStyle = "#FFFFFF";
