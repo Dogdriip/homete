@@ -3,12 +3,12 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Layout } from "../components/layout";
-import { Header } from "../components/header";
+import { Layout } from "../../components/layout";
+import { Header } from "../../components/header";
 import { Homete } from "../../types/homete";
 import { getHometeById } from "../../lib/homete";
-import { NormalCard } from "../components/card";
-import { HometeContent } from "../components/homete";
+import { NormalCard } from "../../components/card";
+import { HometeContent } from "../../components/homete";
 
 const HometePage = ({
   homete,

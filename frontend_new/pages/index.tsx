@@ -1,8 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import { Layout } from "./components/layout";
-import { Header } from "./components/header";
-import { NormalCard } from "./components/card";
+import { Layout } from "../components/layout";
+import { Header } from "../components/header";
+import { NormalCard } from "../components/card";
 
 const IndexPage = () => {
   return (

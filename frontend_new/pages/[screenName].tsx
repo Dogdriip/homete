@@ -2,16 +2,16 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Layout } from "./components/layout";
-import { Header } from "./components/header";
+import { Layout } from "../components/layout";
+import { Header } from "../components/header";
 import {
   NormalCard,
   NormalCenteredCard,
   NormalHometeCard,
   TemporaryHometeCard,
-} from "./components/card";
-import { ProfileContent } from "./components/profile";
-import { HometeContent } from "./components/homete";
+} from "../components/card";
+import { ProfileContent } from "../components/profile";
+import { HometeContent } from "../components/homete";
 import { getUserByScreenName } from "../lib/user";
 import { User } from "../types/user";
 import { getHometesByScreenName } from "../lib/homete";
