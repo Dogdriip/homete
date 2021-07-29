@@ -74,6 +74,15 @@ const UserPage = ({
     <Layout>
       <Head>
         <title>homete! - @{user.screen_name}</title>
+        <meta name="twitter:card" content="summary" />
+        <meta
+          property="og:url"
+          content={`https://homete.driip.me/${user.screen_name}`}
+        />
+        <meta
+          property="og:title"
+          content={`@${user.name}님에게 칭찬해 주세요!`}
+        />
       </Head>
 
       <header>

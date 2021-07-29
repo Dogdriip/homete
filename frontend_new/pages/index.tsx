@@ -9,6 +9,11 @@ const IndexPage = () => {
     <Layout>
       <Head>
         <title>homete!</title>
+        <meta property="og:url" content={`https://homete.driip.me/`} />
+        <meta
+          property="og:title"
+          content={`homete! - 모두가 칭찬받고 칭찬할 수 있는 플랫폼!`}
+        />
       </Head>
 
       <header>
@@ -48,19 +53,6 @@ const IndexPage = () => {
             <li>
               로그인하지 않아도 다른 사람의 프로필에서 익명으로 칭찬을 남길 수
               있어요.
-            </li>
-          </ul>
-        </NormalCard>
-        <NormalCard>
-          <h2>불편 사항 및 건의 접수는요?</h2>
-          <ul>
-            <li>
-              불쾌한 칭찬을 받았거나 칭찬 삭제를 원한다면 개발자 @__Dogdriiiiip
-              에게 연락해 주세요!
-            </li>
-            <li>
-              불편 사항, 가입이 안 되는 버그, 건의 사항 등 서비스에 관한 모든
-              연락은 환영입니다!
             </li>
           </ul>
         </NormalCard>

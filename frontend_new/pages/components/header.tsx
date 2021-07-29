@@ -26,7 +26,7 @@ export const Header = () => {
   const loggedIn: ReactNode = useMemo(() => {
     return (
       <div className={styles.dropdown}>
-        <span>{`@${user?.screen_name}`}</span>
+        <span className={styles.screen_name}>{`@${user?.screen_name}`}</span>
         <div className={styles.dropdown_content}>
           <div
             className={styles.dropdown_item}

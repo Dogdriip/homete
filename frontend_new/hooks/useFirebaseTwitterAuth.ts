@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  getAuth,
-  onAuthStateChanged,
-  getAdditionalUserInfo,
-  signInWithCredential,
-  reauthenticateWithPopup,
-  getRedirectResult,
-  UserCredential,
-  TwitterAuthProvider,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { loginWithTwitter, logoutFromTwitter } from "../lib/auth";
 import { getUserByUid, setUserByUserCredential } from "../lib/user";
 import { User } from "../types/user";
@@ -24,6 +15,8 @@ const useFirebaseTwitterAuth = () => {
       if (firebaseUser) {
         const user = await getUserByUid(firebaseUser.uid);
         setUser(user);
+      } else {
+        setUser(null);
       }
       setLoading(false);
     });
