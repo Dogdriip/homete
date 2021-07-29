@@ -8,6 +8,8 @@ import {
   getDocs,
   getDoc,
   doc,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import firebaseConfig from "../config/firebaseConfig";
 import { Homete } from "../types/homete";
@@ -39,4 +41,23 @@ export const getHometeById = async (id: string) => {
 
   const homete: Homete = { id, ...docSnap.data() } as Homete;
   return homete;
+};
+
+export const approveHometeById = async (id: string) => {
+  if (!getApps().length) {
+    initializeApp(firebaseConfig);
+  }
+  const db = getFirestore();
+  const docRef = doc(db, "hometes", id);
+  await updateDoc(docRef, {
+    resolved: true,
+  });
+};
+
+export const deleteHometeById = async (id: string) => {
+  if (!getApps().length) {
+    initializeApp(firebaseConfig);
+  }
+  const db = getFirestore();
+  await deleteDoc(doc(db, "hometes", id));
 };

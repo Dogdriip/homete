@@ -45,7 +45,7 @@ const UserPage = ({
     );
   }, []);
   const hometesOrEmptyHometeMessage = useMemo(() => {
-    return hometes === null ? (
+    return hometes?.length === 0 ? (
       <NormalCenteredCard>
         <p>아직 받은 칭찬이 없어요...</p>
       </NormalCenteredCard>

@@ -14,4 +14,29 @@
       cursor: pointer;
     }
   }
+
+  .dropdown {
+    position: relative;
+
+    .dropdown_content {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 1.8rem;
+      right: 0;
+      background: #ffffff;
+      width: 10rem;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
+      z-index: 1;
+
+      .dropdown_item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .dropdown:hover .dropdown_content {
+    display: flex;
+  }
 }

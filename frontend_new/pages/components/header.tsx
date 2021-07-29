@@ -1,47 +1,58 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import { loginWithTwitter, logout } from "../../lib/auth";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useRouter } from "next/router";
 import styles from "../../styles/header.module.scss";
+import useFirebaseTwitterAuth from "../../hooks/useFirebaseTwitterAuth";
 
 export const Header = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    });
-  }, []);
+  const { user, loading, login, logout } = useFirebaseTwitterAuth();
+  const router = useRouter();
 
   const handleLoginClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(
     async (e) => {
       e.preventDefault();
-      setIsLoading(true);
-
-      const result = await loginWithTwitter();
-      if (result) {
-        const user = result.user;
-
-        const uid = user.uid;
-        const displayName = user.providerData[0].displayName;
-
-        console.log(user);
-      }
-
-      setIsLoading(false);
+      const result = await login();
     },
-    []
+    [login]
   );
-
-  const handleLogoutClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(
+  const handleLogoutClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
     async (e) => {
       e.preventDefault();
-      setIsLoading(true);
       await logout();
-      setIsLoading(false);
     },
-    []
+    [logout]
   );
+
+  const loggedIn: ReactNode = useMemo(() => {
+    return (
+      <div className={styles.dropdown}>
+        <span>{user?.displayName}</span>
+        <div className={styles.dropdown_content}>
+          <div
+            className={styles.dropdown_item}
+            onClick={() => router.push(`/${false}`)}
+          >
+            <a>내 페이지</a>
+          </div>
+          <div className={styles.dropdown_item} onClick={handleLogoutClick}>
+            <a>로그아웃</a>
+          </div>
+        </div>
+      </div>
+    );
+  }, [user]);
+  const notLoggedIn: ReactNode = useMemo(() => {
+    return (
+      <a className={styles.login_with_twitter} onClick={handleLoginClick}>
+        트위터로 로그인
+      </a>
+    );
+  }, [handleLoginClick]);
 
   return (
     <div className={styles.header}>
@@ -49,16 +60,12 @@ export const Header = () => {
         <h1>homete!</h1>
       </div>
       <div className={styles.login_status}>
-        {isLoading ? (
+        {loading ? (
           <p className={styles.loading}>로딩중...</p>
         ) : user ? (
-          <a className={styles.logout} onClick={handleLogoutClick}>
-            로그아웃
-          </a>
+          loggedIn
         ) : (
-          <a className={styles.login_with_twitter} onClick={handleLoginClick}>
-            트위터로 로그인
-          </a>
+          notLoggedIn
         )}
       </div>
     </div>

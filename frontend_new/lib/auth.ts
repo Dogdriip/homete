@@ -16,7 +16,7 @@ export const loginWithTwitter = async () => {
   }
 };
 
-export const logout = async () => {
+export const logoutFromTwitter = async () => {
   const auth = getAuth();
   try {
     await signOut(auth);
