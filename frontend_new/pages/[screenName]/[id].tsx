@@ -26,7 +26,10 @@ const HometePage = ({
           property="og:title"
           content={`@${homete.recipient}님은 칭찬받았어요!`}
         />
-        <meta property="og:image" content={`/api/hometeImage/${homete.id}`} />
+        <meta
+          property="og:image"
+          content={`https://homete.driip.me/api/hometeImage/${homete.id}`}
+        />
       </Head>
 
       <header>
