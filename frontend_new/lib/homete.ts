@@ -10,6 +10,8 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import firebaseConfig from "../config/firebaseConfig";
 import { Homete } from "../types/homete";
@@ -41,6 +43,20 @@ export const getHometeById = async (id: string) => {
 
   const homete: Homete = { id, ...docSnap.data() } as Homete;
   return homete;
+};
+
+export const setHomete = async (recipient: string, description: string) => {
+  if (!getApps().length) {
+    initializeApp(firebaseConfig);
+  }
+  const db = getFirestore();
+
+  await addDoc(collection(db, "hometes"), {
+    recipient: recipient,
+    description: description,
+    resolved: false,
+    timestamp: serverTimestamp(),
+  });
 };
 
 export const approveHometeById = async (id: string) => {

@@ -11,16 +11,18 @@ import {
   TemporaryHometeCard,
 } from "../components/card";
 import { ProfileContent } from "../components/profile";
-import { HometeContent } from "../components/homete";
+import { HometeContent, SendHomete } from "../components/homete";
 import { getUserByScreenName } from "../lib/user";
 import { User } from "../types/user";
 import { getHometesByScreenName } from "../lib/homete";
 import { Homete } from "../types/homete";
+import useFirebaseTwitterAuth from "../hooks/useFirebaseTwitterAuth";
 
 const UserPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+  const { user: authUser } = useFirebaseTwitterAuth();
   const [hometes, setHometes] = useState<Homete[] | null>(null);
   const [resolvedHometes, setResolvedHometes] = useState<Homete[]>([]);
   const [unresolvedHometes, setUnresolvedHometes] = useState<Homete[]>([]);
@@ -51,11 +53,12 @@ const UserPage = ({
       </NormalCenteredCard>
     ) : (
       <>
-        {unresolvedHometes.map((unresolvedHomete: Homete) => (
-          <TemporaryHometeCard key={unresolvedHomete.id}>
-            <HometeContent homete={unresolvedHomete} />
-          </TemporaryHometeCard>
-        ))}
+        {authUser?.screen_name === user.screen_name &&
+          unresolvedHometes.map((unresolvedHomete: Homete) => (
+            <TemporaryHometeCard key={unresolvedHomete.id}>
+              <HometeContent homete={unresolvedHomete} />
+            </TemporaryHometeCard>
+          ))}
         {resolvedHometes.map((resolvedHomete: Homete) => (
           <NormalHometeCard
             key={resolvedHomete.id}
@@ -68,7 +71,14 @@ const UserPage = ({
         ))}
       </>
     );
-  }, [hometes, resolvedHometes, router, unresolvedHometes, user.screen_name]);
+  }, [
+    hometes,
+    resolvedHometes,
+    router,
+    unresolvedHometes,
+    user.screen_name,
+    authUser,
+  ]);
 
   return (
     <Layout>
@@ -91,6 +101,9 @@ const UserPage = ({
       <main>
         <NormalCard key="profile_card">
           <ProfileContent user={user} />
+        </NormalCard>
+        <NormalCard key="send_homete_card">
+          <SendHomete recipient={user.screen_name} />
         </NormalCard>
         {hometes === null ? loadingCard : hometesOrEmptyHometeMessage}
       </main>

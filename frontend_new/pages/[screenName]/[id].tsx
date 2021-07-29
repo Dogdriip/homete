@@ -31,7 +31,6 @@ const HometePage = ({
           content={`https://homete.driip.me/api/hometeImage/${homete.id}`}
         />
       </Head>
-
       <header>
         <Header />
       </header>
