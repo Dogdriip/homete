@@ -1,10 +1,5 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useMemo } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/header.module.scss";
 import useFirebaseTwitterAuth from "../../hooks/useFirebaseTwitterAuth";
@@ -57,7 +52,11 @@ export const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
-        <h1>homete!</h1>
+        <Link href="/">
+          <a>
+            <h1>homete!</h1>
+          </a>
+        </Link>
       </div>
       <div className={styles.login_status}>
         {loading ? (

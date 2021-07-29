@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  User as FirebaseUser,
+  getAuth,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { loginWithTwitter, logoutFromTwitter } from "../lib/auth";
+import { setUserByUid } from "../lib/user";
+import { User } from "../types/user";
 
 const useFirebaseTwitterAuth = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -8,19 +14,16 @@ const useFirebaseTwitterAuth = () => {
 
   useEffect(() => {
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        console.log(firebaseUser);
+      }
     });
   }, []);
 
   const login = async () => {
     setLoading(true);
-    const result = await loginWithTwitter();
-    if (result) {
-      // Login succeed
-    } else {
-      // Logout failure
-    }
+    await loginWithTwitter();
     setLoading(false);
   };
   const logout = async () => {
