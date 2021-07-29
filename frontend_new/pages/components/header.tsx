@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo } from "react";
+import React, { ReactNode, useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/header.module.scss";
@@ -11,7 +11,7 @@ export const Header = () => {
   const handleLoginClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(
     async (e) => {
       e.preventDefault();
-      const result = await login();
+      await login();
     },
     [login]
   );

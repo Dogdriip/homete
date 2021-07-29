@@ -3,36 +3,37 @@ import {
   getAuth,
   onAuthStateChanged,
   getAdditionalUserInfo,
+  signInWithCredential,
+  reauthenticateWithPopup,
+  getRedirectResult,
   UserCredential,
+  TwitterAuthProvider,
 } from "firebase/auth";
 import { loginWithTwitter, logoutFromTwitter } from "../lib/auth";
-import { setUserByUserCredential } from "../lib/user";
+import { getUserByUid, setUserByUserCredential } from "../lib/user";
 import { User } from "../types/user";
 
 const useFirebaseTwitterAuth = () => {
+  const auth = getAuth();
   const [loading, setLoading] = useState<boolean>(false);
-  const [userCredential, setUserCredential] = useState<UserCredential | null>(
-    null
-  );
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const auth = getAuth();
+    setLoading(true);
     onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser && userCredential) {
-        const user = await setUserByUserCredential(userCredential);
+      if (firebaseUser) {
+        const user = await getUserByUid(firebaseUser.uid);
         setUser(user);
-      } else {
-        setUser(null);
       }
+      setLoading(false);
     });
-  }, [userCredential]);
+  }, [auth]);
 
   const login = async () => {
     setLoading(true);
     const userCredential = await loginWithTwitter();
     if (userCredential) {
-      setUserCredential(userCredential);
+      await setUserByUserCredential(userCredential);
     }
     setLoading(false);
   };

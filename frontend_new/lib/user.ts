@@ -6,6 +6,7 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
   setDoc,
   doc,
 } from "firebase/firestore";
@@ -24,6 +25,17 @@ export const getUserByScreenName = async (screenName: string) => {
   const querySnapshot = await getDocs(q);
 
   const user = querySnapshot.docs[0].data() as User;
+  return user;
+};
+
+export const getUserByUid = async (uid: string) => {
+  if (!getApps().length) {
+    initializeApp(firebaseConfig);
+  }
+  const db = getFirestore();
+  const docSnap = await getDoc(doc(db, "users", uid));
+
+  const user = docSnap.data() as User;
   return user;
 };
 
@@ -54,5 +66,4 @@ export const setUserByUserCredential = async (
   } as User;
 
   await setDoc(doc(db, "users", userCredential.user.uid), user);
-  return user;
 };
