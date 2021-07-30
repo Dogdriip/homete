@@ -36,7 +36,7 @@ const HometePage = ({
       </header>
       <main>
         <NormalCard key={homete.id}>
-          <HometeContent homete={homete} />
+          <HometeContent homete={homete} fetchHometes={() => {}} />
         </NormalCard>
         <Link href={`/${homete.recipient}`}>
           <a>&lt; 목록으로 돌아가기</a>
