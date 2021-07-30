@@ -52,7 +52,7 @@ const UserPage = ({
     const userIsAuthedAndIsMyPage: boolean =
       authUser !== null && authUser.screen_name === user.screen_name;
 
-    return resolvedHometes.length === 0 ? (
+    return resolvedHometes.length === 0 && unresolvedHometes.length === 0 ? (
       <NormalCenteredCard>
         <p>아직 받은 칭찬이 없어요...</p>
       </NormalCenteredCard>
