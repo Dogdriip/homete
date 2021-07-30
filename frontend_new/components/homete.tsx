@@ -5,7 +5,13 @@ import { Homete } from "../types/homete";
 import { approveHometeById, deleteHometeById, setHomete } from "../lib/homete";
 import useFirebaseTwitterAuth from "../hooks/useFirebaseTwitterAuth";
 
-export const HometeContent = ({ homete }: { homete: Homete }) => {
+export const HometeContent = ({
+  homete,
+  fetchHometes,
+}: {
+  homete: Homete;
+  fetchHometes: VoidFunction;
+}) => {
   const timestampStr = new Date(
     homete.timestamp.seconds * 1_000
   ).toLocaleString("ko-KR");
@@ -14,8 +20,9 @@ export const HometeContent = ({ homete }: { homete: Homete }) => {
     async (e) => {
       e.preventDefault();
       await deleteHometeById(homete.id);
+      fetchHometes();
     },
-    [homete]
+    [fetchHometes, homete]
   );
   const handleApproveHometeClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     async (e) => {
@@ -28,8 +35,9 @@ export const HometeContent = ({ homete }: { homete: Homete }) => {
           text
         )}&url=${url}&hashtags=homete`
       );
+      fetchHometes();
     },
-    [homete]
+    [fetchHometes, homete]
   );
 
   return (
@@ -60,7 +68,13 @@ export const HometeContent = ({ homete }: { homete: Homete }) => {
   );
 };
 
-export const SendHomete = ({ recipient }: { recipient: string }) => {
+export const SendHomete = ({
+  recipient,
+  fetchHometes,
+}: {
+  recipient: string;
+  fetchHometes: VoidFunction;
+}) => {
   const [description, setDescription] = useState<string>("");
   const onSendClick = useCallback(async () => {
     if (description.length === 0) {
@@ -76,7 +90,8 @@ export const SendHomete = ({ recipient }: { recipient: string }) => {
     await setHomete(recipient, description);
     alert("칭찬을 남겼어요!");
     setDescription("");
-  }, [description, recipient]);
+    fetchHometes();
+  }, [description, fetchHometes, recipient]);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -88,7 +103,7 @@ export const SendHomete = ({ recipient }: { recipient: string }) => {
   );
 
   return (
-    <>
+    <div className={styles.input_area}>
       <input
         type="text"
         value={description}
@@ -97,6 +112,6 @@ export const SendHomete = ({ recipient }: { recipient: string }) => {
         placeholder="익명으로 칭찬하기..."
       />
       <button onClick={onSendClick}>보내기</button>
-    </>
+    </div>
   );
 };

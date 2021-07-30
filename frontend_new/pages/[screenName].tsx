@@ -23,21 +23,23 @@ const UserPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { user: authUser } = useFirebaseTwitterAuth();
-  const [hometes, setHometes] = useState<Homete[] | null>(null);
+  const [loadingHometes, setLoadingHometes] = useState<boolean>(false);
   const [resolvedHometes, setResolvedHometes] = useState<Homete[]>([]);
   const [unresolvedHometes, setUnresolvedHometes] = useState<Homete[]>([]);
 
-  useEffect(() => {
-    const fetchHometes = async () => {
-      const hometes: Homete[] = await getHometesByScreenName(user.screen_name);
-      setHometes(hometes);
-      setResolvedHometes(hometes.filter((homete: Homete) => homete.resolved));
-      setUnresolvedHometes(
-        hometes.filter((homete: Homete) => !homete.resolved)
-      );
-    };
-    fetchHometes();
+  const fetchHometes = useCallback(async () => {
+    setLoadingHometes(true);
+
+    const hometes: Homete[] = await getHometesByScreenName(user.screen_name);
+    setResolvedHometes(hometes.filter((homete: Homete) => homete.resolved));
+    setUnresolvedHometes(hometes.filter((homete: Homete) => !homete.resolved));
+
+    setLoadingHometes(false);
   }, [user]);
+
+  useEffect(() => {
+    fetchHometes();
+  }, [fetchHometes, user]);
 
   const loadingCard = useMemo(() => {
     return (
@@ -47,16 +49,22 @@ const UserPage = ({
     );
   }, []);
   const hometesOrEmptyHometeMessage = useMemo(() => {
-    return hometes?.length === 0 ? (
+    const userIsAuthedAndIsMyPage: boolean =
+      authUser !== null && authUser.screen_name === user.screen_name;
+
+    return resolvedHometes.length === 0 ? (
       <NormalCenteredCard>
         <p>아직 받은 칭찬이 없어요...</p>
       </NormalCenteredCard>
     ) : (
       <>
-        {authUser?.screen_name === user.screen_name &&
+        {userIsAuthedAndIsMyPage &&
           unresolvedHometes.map((unresolvedHomete: Homete) => (
             <TemporaryHometeCard key={unresolvedHomete.id}>
-              <HometeContent homete={unresolvedHomete} />
+              <HometeContent
+                homete={unresolvedHomete}
+                fetchHometes={fetchHometes}
+              />
             </TemporaryHometeCard>
           ))}
         {resolvedHometes.map((resolvedHomete: Homete) => (
@@ -66,18 +74,21 @@ const UserPage = ({
               router.push(`/${user.screen_name}/${resolvedHomete.id}`)
             }
           >
-            <HometeContent homete={resolvedHomete} />
+            <HometeContent
+              homete={resolvedHomete}
+              fetchHometes={fetchHometes}
+            />
           </NormalHometeCard>
         ))}
       </>
     );
   }, [
-    hometes,
-    resolvedHometes,
-    router,
-    unresolvedHometes,
-    user.screen_name,
     authUser,
+    user,
+    resolvedHometes,
+    unresolvedHometes,
+    fetchHometes,
+    router,
   ]);
 
   return (
@@ -103,9 +114,12 @@ const UserPage = ({
           <ProfileContent user={user} />
         </NormalCard>
         <NormalCard key="send_homete_card">
-          <SendHomete recipient={user.screen_name} />
+          <SendHomete
+            recipient={user.screen_name}
+            fetchHometes={fetchHometes}
+          />
         </NormalCard>
-        {hometes === null ? loadingCard : hometesOrEmptyHometeMessage}
+        {loadingHometes ? loadingCard : hometesOrEmptyHometeMessage}
       </main>
     </Layout>
   );
