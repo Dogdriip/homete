@@ -16,6 +16,7 @@
     "copy-webpack-plugin": "^9.0.1",
     "firebase": "9.0.0-beta.6",
     "next": "11.0.1",
+    "node-canvas-with-twemoji": "^0.1.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-toastify": "^7.0.4",
