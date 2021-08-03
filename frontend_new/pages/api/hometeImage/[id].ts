@@ -3,7 +3,7 @@ import { createCanvas, registerFont } from "canvas";
 import { getHometeById } from "../../../lib/homete";
 import { Homete } from "../../../types/homete";
 import path from "path";
-import { parse } from "twemoji-parser";
+import { fillTextWithTwemoji } from "node-canvas-with-twemoji-and-discord-emoji";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -53,7 +53,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   context.textAlign = "center";
   context.textBaseline = "top";
   context.fillStyle = "#000000";
-  context.fillText(parse(hometeDescriptionNewLine), 600, 200);
+  context.fillText(hometeDescriptionNewLine, 600, 200);
+  await fillTextWithTwemoji(context, hometeDescriptionNewLine, 600, 200);
 
   context.font = "1rem 'CookieRun Regular' sans-serif";
   context.textAlign = "center";
